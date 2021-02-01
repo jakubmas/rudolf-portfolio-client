@@ -1,8 +1,8 @@
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import { makeStyles } from '@material-ui/styles'
 import React from 'react'
-import { WorkCard } from '../src/components/ui/WorkCard/WorkCard'
-import { LayoutContainer } from '../src/containers/Layout'
+import { WorkCard } from '../components/ui/WorkCard/WorkCard'
+import { LayoutContainer } from '../containers/Layout'
 
 
 

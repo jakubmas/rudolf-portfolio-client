@@ -203,6 +203,7 @@ export const Header: FunctionComponent = () => {
   };
 
   useEffect(() => {
+    console.log('eeeelo')
     let newArray = [...tabs];
     newArray.forEach((element) => {
       if (element.to === window.location.pathname) element.active = true;

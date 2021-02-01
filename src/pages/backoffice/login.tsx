@@ -1,11 +1,11 @@
 import React from 'react'
-import { ImageContainer } from '../src/components/ui/ImageContainer'
-import { LayoutBorder } from '../src/components/ui/LayoutBorder'
-import { SideContentContainer } from '../src/components/ui/SideContentContainer'
-import { LayoutCenterItem, LayoutContainer } from '../src/containers/Layout'
+import { ImageContainer } from '../../components/ui/ImageContainer'
+import { LayoutBorder } from '../../components/ui/LayoutBorder'
+import { SideContentContainer } from '../../components/ui/SideContentContainer'
+import { LayoutCenterItem, LayoutContainer } from '../../containers/Layout'
 
 
-export default function ContactPage() {
+export default function Login() {
   return (
     <LayoutContainer breakdownPoint="md">
       <LayoutCenterItem breakdownPoint="md" columnsNumber={7}>

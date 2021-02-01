@@ -3,13 +3,13 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Footer } from '../src/components/ui/Footer';
-import { Header } from '../src/components/ui/Header';
-import theme from '../src/components/ui/theme';
+import { Footer } from '../components/ui/Footer';
+import { Header } from '../components/ui/Header';
+import theme from '../components/ui/theme';
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
-
+  
   React.useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -17,6 +17,8 @@ export default function MyApp(props) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
+
+  
 
   return (
     <React.Fragment>
