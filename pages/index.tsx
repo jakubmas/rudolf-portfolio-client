@@ -1,38 +1,12 @@
-// import Box from '@material-ui/core/Box';
-// import Container from '@material-ui/core/Container';
-// import Typography from '@material-ui/core/Typography';
-// import React from 'react';
-// // import Link from '../src/Link';
-// // import { Header } from '../src/components/ui/Header';
-
-// export default function Index() {
-//   return (
-//     <Container maxWidth="sm">
-//       {/* <Header /> */}
-//       <Box my={4}>
-//         <Typography variant="h4" component="h1" gutterBottom>
-//           Co tam byku
-//         </Typography>
-//         {/* <Link href="/about" color="secondary">
-//           Go to the about page
-//         </Link> */}
-//       </Box>
-//     </Container>
-//   );
-// }
-
-
 import { Typography } from '@material-ui/core'
 import { useTheme } from '@material-ui/core/styles'
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { makeStyles } from '@material-ui/styles'
 import React from 'react'
+import { ImageContainer } from '../src/components/ui/ImageContainer'
 import { SideContentContainer } from '../src/components/ui/SideContentContainer'
 import { LayoutCenterItem, LayoutContainer } from '../src/containers/Layout'
-
-
-// import landingPagePhoto from '../src/assets/photos/LandingPage-photo.png'
 
 const useStyles = makeStyles((theme: Theme) => ({
   rotatedLogo: {
@@ -68,10 +42,10 @@ export default function Index() {
         </Typography>
       </LayoutCenterItem>
       <LayoutCenterItem breakdownPoint="md" columnsNumber={4}>
-        {/* <ImageContainer
-          srcImage={landingPagePhoto}
+        <ImageContainer
+          srcImage="/assets/LandingPage-photo.png"
           altImage="Landing Page photography"
-        /> */}
+        />
       </LayoutCenterItem>
       <LayoutCenterItem breakdownPoint="md" columnsNumber={4}>
         <SideContentContainer />

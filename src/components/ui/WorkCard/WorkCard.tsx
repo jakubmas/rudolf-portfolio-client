@@ -1,18 +1,12 @@
-import React, { FunctionComponent, useState } from 'react'
-import { useHistory } from 'react-router-dom'
-
-import { makeStyles } from '@material-ui/styles'
-import Card from '@material-ui/core/Card'
 import { Grid } from '@material-ui/core'
+import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import Typography from '@material-ui/core/Typography'
-
+import { makeStyles } from '@material-ui/styles'
+import React, { FunctionComponent, useState } from 'react'
 import { LayoutCenterItem } from '../../../containers/Layout'
 import { WorkCardInformations } from './WorkCardInformations'
-
-import TestPhoto from '../../../assets/photos/LandingPage-photo.png'
-import Test2Photo from '../../../assets/photos/Contact-photo.png'
 
 const useStyles = makeStyles(() => ({
   media: {
@@ -41,7 +35,6 @@ export const WorkCard: FunctionComponent<WorkCardProps> = ({
 }) => {
   const classes = useStyles()
 
-  const history = useHistory()
   const [cardHovered, setCardHovered] = useState(false)
 
   const toggleRaised = () => {
@@ -64,14 +57,14 @@ export const WorkCard: FunctionComponent<WorkCardProps> = ({
         className={classes.cardWrapper}
         onMouseOver={toggleRaised}
         onMouseOut={toggleRaised}
-        onClick={() => {
-          history.push(`/work/session/${index}`)
-        }}
+        // onClick={() => {
+        //   history.push(`/work/session/${index}`)
+        // }}
         raised={cardHovered}
       >
         <CardMedia
           className={classes.media}
-          image={testPhoto ? TestPhoto : Test2Photo}
+          image={testPhoto ? '/assets/LandingPage-photo.png' : '/assets/Contact-photo.png'}
           title="Main photo for session "
         />
         <CardContent>

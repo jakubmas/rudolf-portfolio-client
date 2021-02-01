@@ -3,8 +3,9 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Footer } from '../src/components/ui/Footer';
 import { Header } from '../src/components/ui/Header';
-import theme from '../src/theme';
+import theme from '../src/components/ui/theme';
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
@@ -31,6 +32,7 @@ export default function MyApp(props) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <Component {...pageProps} />
+        <Footer />
       </ThemeProvider>
     </React.Fragment>
   );
