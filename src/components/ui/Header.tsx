@@ -58,6 +58,9 @@ const useStyles = makeStyles((theme: Theme) => {
       textTransform: 'none',
       fontSize: '1rem',
       minWidth: 10,
+      '&:hover': {
+        backgroundColor: 'transparent',
+      },
     },
     languageToggler: {
       marginRight: '2rem',
