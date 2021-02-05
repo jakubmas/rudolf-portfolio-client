@@ -33,20 +33,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   notchedOutline: {},
 }));
 
-export const Input = ({
-  label,
-  value,
-  setValue,
-  id,
-  helperText,
-  style = {},
-}) => {
+export const Input = ({ label, value, setValue, helperText, style = {} }) => {
   const classes = useStyles();
 
   return (
     <TextField
       label={label}
-      id={id}
       fullWidth
       variant="outlined"
       margin="dense"

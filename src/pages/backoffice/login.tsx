@@ -69,7 +69,6 @@ export default function Login() {
         >
           <Grid item className={classes.inputContainer}>
             <Input
-              id="email"
               label="email"
               value={email}
               helperText={emailHelper}
@@ -78,7 +77,6 @@ export default function Login() {
           </Grid>
           <Grid item className={classes.inputContainer}>
             <Input
-              id="password"
               label="password"
               value={password}
               helperText={passwordHelper}
