@@ -1,12 +1,12 @@
-import { Grid } from '@material-ui/core'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import CardMedia from '@material-ui/core/CardMedia'
-import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/styles'
-import React, { FunctionComponent, useState } from 'react'
-import { LayoutCenterItem } from '../../../containers/Layout'
-import { WorkCardInformations } from './WorkCardInformations'
+import { Grid } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/styles';
+import React, { useState } from 'react';
+import { LayoutCenterItem } from '../../../containers/Layout';
+import { WorkCardInformations } from './WorkCardInformations';
 
 const useStyles = makeStyles(() => ({
   media: {
@@ -22,31 +22,28 @@ const useStyles = makeStyles(() => ({
     fontWeight: 100,
     fontSize: '1.4rem'
   }
-}))
+}));
 
 type WorkCardProps = {
-  testPhoto: Boolean
-  index: number
-}
+  testPhoto: Boolean;
+  index: number;
+};
 
-export const WorkCard: FunctionComponent<WorkCardProps> = ({
-  testPhoto,
-  index
-}) => {
-  const classes = useStyles()
+export const WorkCard: React.FC<WorkCardProps> = ({ testPhoto, index }) => {
+  const classes = useStyles();
 
-  const [cardHovered, setCardHovered] = useState(false)
+  const [cardHovered, setCardHovered] = useState(false);
 
   const toggleRaised = () => {
-    const state = cardHovered
-    setCardHovered(!state)
-  }
+    const state = cardHovered;
+    setCardHovered(!state);
+  };
 
   const information = {
     model: 'Rogal DDL',
     place: 'Warsaw',
     equipment: 'Sony A6000, Sigma30 mm F.14'
-  }
+  };
 
   return (
     <LayoutCenterItem breakdownPoint="sm" columnsNumber={4}>
@@ -64,7 +61,11 @@ export const WorkCard: FunctionComponent<WorkCardProps> = ({
       >
         <CardMedia
           className={classes.media}
-          image={testPhoto ? '/assets/LandingPage-photo.png' : '/assets/Contact-photo.png'}
+          image={
+            testPhoto
+              ? '/assets/LandingPage-photo.png'
+              : '/assets/Contact-photo.png'
+          }
           title="Main photo for session "
         />
         <CardContent>
@@ -76,5 +77,5 @@ export const WorkCard: FunctionComponent<WorkCardProps> = ({
         </CardContent>
       </Grid>
     </LayoutCenterItem>
-  )
-}
+  );
+};

@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from 'react'
-import { makeStyles } from '@material-ui/styles'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import { makeStyles } from '@material-ui/styles';
+import React from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   footerContainer: {
@@ -14,14 +14,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: '0 auto',
     borderRadius: '200px'
   }
-}))
+}));
 
-export const Footer: FunctionComponent = () => {
-  const classes = useStyles()
+export const Footer: React.FC = () => {
+  const classes = useStyles();
 
   return (
     <footer className={classes.footerContainer}>
       <div className={classes.bottomLine} />
     </footer>
-  )
-}
+  );
+};

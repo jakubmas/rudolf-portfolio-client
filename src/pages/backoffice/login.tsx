@@ -15,25 +15,25 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '1.2rem',
     [theme.breakpoints.down('xs')]: {
       backgroundColor: 'transparent',
-      border: 'none',
-    },
+      border: 'none'
+    }
   },
   inputContainer: {
     padding: '1.2rem',
     width: '20rem',
     [theme.breakpoints.down('xs')]: {
-      width: '100%',
-    },
+      width: '100%'
+    }
   },
   button: {
     marginTop: '1.5rem',
     width: '6rem',
     borderRadius: '0.7rem',
-    color: 'white',
-  },
+    color: 'white'
+  }
 }));
 
-export default function Login() {
+export const login: React.FC = () => {
   const classes = useStyles();
 
   const [email, setEmail] = useState('');
@@ -108,4 +108,4 @@ export default function Login() {
       </LayoutCenterItem>
     </LayoutContainer>
   );
-}
+};

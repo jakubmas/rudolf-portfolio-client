@@ -1,11 +1,10 @@
-import React from 'react'
-import { ImageContainer } from '../components/ui/ImageContainer'
-import { LayoutBorder } from '../components/ui/LayoutBorder'
-import { SideContentContainer } from '../components/ui/SideContentContainer'
-import { LayoutCenterItem, LayoutContainer } from '../containers/Layout'
+import React from 'react';
+import { ImageContainer } from '../components/ui/ImageContainer';
+import { LayoutBorder } from '../components/ui/LayoutBorder';
+import { SideContentContainer } from '../components/ui/SideContentContainer';
+import { LayoutCenterItem, LayoutContainer } from '../containers/Layout';
 
-
-export default function ContactPage() {
+export const contactPage: React.FC = () => {
   return (
     <LayoutContainer breakdownPoint="md">
       <LayoutCenterItem breakdownPoint="md" columnsNumber={7}>
@@ -19,5 +18,5 @@ export default function ContactPage() {
         <SideContentContainer containerWest iconsSection />
       </LayoutCenterItem>
     </LayoutContainer>
-  )
-}
+  );
+};

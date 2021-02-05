@@ -14,7 +14,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/styles';
 import Link from 'next/link';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface Tab {
   to: string;
@@ -28,77 +28,77 @@ const useStyles = makeStyles((theme: Theme) => {
   return {
     toolbarMargin: {
       ...theme.mixins.toolbar,
-      marginBottom: '3em',
+      marginBottom: '3em'
     },
     headerContainer: {
       position: 'fixed',
       top: 0,
       left: 0,
-      margin: 0,
+      margin: 0
     },
     toolbarContainer: {
       marginLeft: '5%',
       marginRight: '5%',
       '& .MuiTabs-flexContainer': {
-        justifyContent: 'space-evenly',
-      },
+        justifyContent: 'space-evenly'
+      }
     },
     logo: {
       fontSize: '0.7rem',
-      lineHeight: '1',
+      lineHeight: '1'
     },
     logoContainer: {
       marginLeft: '2rem',
       padding: 0,
       '&:hover': {
-        backgroundColor: 'transparent',
-      },
+        backgroundColor: 'transparent'
+      }
     },
     tab: {
       textTransform: 'none',
       fontSize: '1rem',
       minWidth: 10,
       '&:hover': {
-        backgroundColor: 'transparent',
-      },
+        backgroundColor: 'transparent'
+      }
     },
     languageToggler: {
       marginRight: '2rem',
-      fontSize: '0.7rem',
+      fontSize: '0.7rem'
     },
     bottomLine: {
       borderTop: '1px solid',
       borderColor: theme.palette.text.primary,
       width: '90%',
       margin: '0 auto',
-      borderRadius: '200px',
+      borderRadius: '200px'
     },
     tabsContainer: {
       width: '100%',
       display: 'flex',
-      justifyContent: 'space-evenly',
+      justifyContent: 'space-evenly'
     },
     tabActive: {
       borderTop: '1px solid',
       borderColor: theme.palette.text.primary,
-      width: '120%',
+      width: '120%'
     },
     tabInactive: {
       border: '1px solid transparent',
-      width: '120%',
+      width: '120%'
     },
     tabButtonContainer: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      boxSizing: 'border-box',
+      boxSizing: 'border-box'
     },
     drawer: {
       backgroundColor: theme.palette.background.default,
       width: '30vw',
       [theme.breakpoints.down('xs')]: {
-        width: '100vw',
-      },
+        width: '100vw'
+      }
     },
     drawerItem: {
       ...theme.typography,
@@ -109,58 +109,58 @@ const useStyles = makeStyles((theme: Theme) => {
       fontWeight: 300,
       [theme.breakpoints.down('xs')]: {
         width: '100vw',
-        fontSize: '2rem',
-      },
+        fontSize: '2rem'
+      }
     },
     drawerListContainer: {
       height: '100vh',
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'space-between',
+      justifyContent: 'space-between'
     },
     drawerLogoContainer: {
       justifyContent: 'center',
       '& .MuiTypography-root': {
         padding: '1rem',
         fontSize: '1.1rem',
-        fontWeight: 300,
+        fontWeight: 300
       },
       [theme.breakpoints.down('xs')]: {
         display: 'flex',
         flexDirection: 'column',
         '&:hover': {
-          backgroundColor: 'transparent',
+          backgroundColor: 'transparent'
         },
         '& .MuiTypography-root': {
           fontSize: '1.5rem',
-          fontWeight: 300,
-        },
-      },
+          fontWeight: 300
+        }
+      }
     },
     menuButton: {
       '&:hover': {
-        backgroundColor: 'transparent',
-      },
+        backgroundColor: 'transparent'
+      }
     },
     drawerCloseButton: {
       alignSelf: 'start',
       paddingBottom: '5vh',
       '&:hover': {
-        backgroundColor: 'transparent',
-      },
+        backgroundColor: 'transparent'
+      }
     },
     drawerLanguageToggler: {
       marginBottom: '10vh',
       justifyContent: 'center',
       '& .MuiTypography-root': {
         fontSize: '1.1rem',
-        fontWeight: 300,
-      },
-    },
+        fontWeight: 300
+      }
+    }
   };
 });
 
-export const Header: FunctionComponent = () => {
+export const Header: React.FC = () => {
   const theme = useTheme();
   const classes = useStyles();
 
@@ -173,18 +173,18 @@ export const Header: FunctionComponent = () => {
     {
       to: '/work',
       label: 'Work',
-      active: false,
+      active: false
     },
     {
       to: '/about',
       label: 'About',
-      active: false,
+      active: false
     },
     {
       to: '/contact',
       label: 'Contact',
-      active: false,
-    },
+      active: false
+    }
   ]);
   const [openDrawer, setOpenDrawer] = useState(false);
 
@@ -283,7 +283,7 @@ export const Header: FunctionComponent = () => {
         onClose={() => setOpenDrawer(false)}
         onOpen={() => setOpenDrawer(true)}
         classes={{
-          paper: classes.drawer,
+          paper: classes.drawer
         }}
       >
         <div>

@@ -1,10 +1,8 @@
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import { makeStyles } from '@material-ui/styles'
-import React from 'react'
-import { WorkCard } from '../components/ui/WorkCard/WorkCard'
-import { LayoutContainer } from '../containers/Layout'
-
-
+import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import { makeStyles } from '@material-ui/styles';
+import React from 'react';
+import { WorkCard } from '../components/ui/WorkCard/WorkCard';
+import { LayoutContainer } from '../containers/Layout';
 
 const useStyles = makeStyles((theme: Theme) => ({
   layoutContainer: {
@@ -13,9 +11,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginTop: 0
     }
   }
-}))
+}));
 
-export default function  Work () {
+export const work: React.FC = () => {
   const DummyArr = [
     true,
     false,
@@ -27,13 +25,13 @@ export default function  Work () {
     false,
     true,
     false
-  ]
-  const classes = useStyles()
+  ];
+  const classes = useStyles();
   return (
     <LayoutContainer breakdownPoint="sm" layoutClass={classes.layoutContainer}>
       {DummyArr.map((el, i) => (
         <WorkCard testPhoto={el} key={Math.random()} index={i} />
       ))}
     </LayoutContainer>
-  )
-}
+  );
+};

@@ -7,31 +7,31 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'absolute',
     bottom: '-2em',
     [theme.breakpoints.down('xs')]: {
-      bottom: '-3em',
-    },
+      bottom: '-3em'
+    }
   },
   cssLabel: {
     '&$cssFocused': {
-      color: theme.palette.text.primary,
-    },
+      color: theme.palette.text.primary
+    }
   },
   cssOutlinedInput: {
     '&$cssFocused $notchedOutline': {
-      borderColor: theme.palette.text.primary,
-    },
+      borderColor: theme.palette.text.primary
+    }
   },
   cssErrorLabel: {
     '&$cssFocused': {
-      color: theme.palette.error,
-    },
+      color: theme.palette.error
+    }
   },
   cssErrorOutlinedInput: {
     '&$cssFocused $notchedOutline': {
-      borderColor: theme.palette.error,
-    },
+      borderColor: theme.palette.error
+    }
   },
   cssFocused: {},
-  notchedOutline: {},
+  notchedOutline: {}
 }));
 
 export const Input = ({
@@ -40,7 +40,7 @@ export const Input = ({
   setValue,
   helperText,
   type = 'text',
-  style = {},
+  style = {}
 }) => {
   const classes = useStyles();
 
@@ -61,8 +61,8 @@ export const Input = ({
           root: `${
             helperText.length !== 0 ? classes.cssErrorLabel : classes.cssLabel
           }`,
-          focused: classes.cssFocused,
-        },
+          focused: classes.cssFocused
+        }
       }}
       InputProps={{
         classes: {
@@ -72,13 +72,13 @@ export const Input = ({
               : classes.cssOutlinedInput
           }`,
           focused: classes.cssFocused,
-          notchedOutline: classes.notchedOutline,
-        },
+          notchedOutline: classes.notchedOutline
+        }
       }}
       FormHelperTextProps={{
         classes: {
-          root: classes.formHelperText,
-        },
+          root: classes.formHelperText
+        }
       }}
     />
   );

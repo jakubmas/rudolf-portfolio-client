@@ -1,9 +1,8 @@
-import React, { FunctionComponent, useEffect, useState } from 'react'
-import { makeStyles } from '@material-ui/styles'
-import { Grid } from '@material-ui/core'
-import Typography from '@material-ui/core/Typography'
-
-import toPairs from 'lodash.topairs'
+import { Grid } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/styles';
+import toPairs from 'lodash.topairs';
+import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles(() => ({
   cardInformationKey: {
@@ -12,28 +11,28 @@ const useStyles = makeStyles(() => ({
   cardInformationText: {
     fontSize: '0.7rem'
   }
-}))
+}));
 
 type WorkCardInformationsProps = {
   information: {
-    model: string
-    place: string
-    equipment: string
-  }
-}
+    model: string;
+    place: string;
+    equipment: string;
+  };
+};
 
-export const WorkCardInformations: FunctionComponent<WorkCardInformationsProps> = ({
+export const WorkCardInformations: React.FC<WorkCardInformationsProps> = ({
   information
 }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const [pairedInformation, setPairedInformation] = useState([['', '']])
+  const [pairedInformation, setPairedInformation] = useState([['', '']]);
 
   useEffect(() => {
-    const informationObjectToArray = toPairs(information)
-    setPairedInformation(informationObjectToArray)
+    const informationObjectToArray = toPairs(information);
+    setPairedInformation(informationObjectToArray);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   return (
     <Grid item>
@@ -61,8 +60,8 @@ export const WorkCardInformations: FunctionComponent<WorkCardInformationsProps> 
               </Typography>
             </Grid>
           </Grid>
-        )
+        );
       })}
     </Grid>
-  )
-}
+  );
+};

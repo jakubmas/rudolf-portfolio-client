@@ -9,7 +9,7 @@ import theme from '../components/ui/theme';
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
-  
+
   React.useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -17,8 +17,6 @@ export default function MyApp(props) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
-
-  
 
   return (
     <React.Fragment>
@@ -42,5 +40,5 @@ export default function MyApp(props) {
 
 MyApp.propTypes = {
   Component: PropTypes.elementType.isRequired,
-  pageProps: PropTypes.object.isRequired,
+  pageProps: PropTypes.object.isRequired
 };

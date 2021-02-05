@@ -1,11 +1,10 @@
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import { makeStyles } from '@material-ui/styles'
-import React from 'react'
-import { ImageContainer } from '../components/ui/ImageContainer'
-import { LayoutBorder } from '../components/ui/LayoutBorder'
-import { SideContentContainer } from '../components/ui/SideContentContainer'
-import { LayoutCenterItem, LayoutContainer } from '../containers/Layout'
-
+import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import { makeStyles } from '@material-ui/styles';
+import React from 'react';
+import { ImageContainer } from '../components/ui/ImageContainer';
+import { LayoutBorder } from '../components/ui/LayoutBorder';
+import { SideContentContainer } from '../components/ui/SideContentContainer';
+import { LayoutCenterItem, LayoutContainer } from '../containers/Layout';
 
 const useStyles = makeStyles((theme: Theme) => ({
   aboutPhoto: {
@@ -14,10 +13,10 @@ const useStyles = makeStyles((theme: Theme) => ({
       maxWidth: '100%'
     }
   }
-}))
+}));
 
-export default function About() {
-  const classes = useStyles()
+export const about: React.FC = () => {
+  const classes = useStyles();
 
   return (
     <LayoutContainer breakdownPoint="md">
@@ -27,11 +26,11 @@ export default function About() {
       </LayoutCenterItem>
       <LayoutCenterItem breakdownPoint="md" columnsNumber={7}>
         <ImageContainer
-          srcImage='/assets/AboutMe-photo.png'
+          srcImage="/assets/AboutMe-photo.png"
           altImage="About me photography"
           imageClass={classes.aboutPhoto}
         />
       </LayoutCenterItem>
     </LayoutContainer>
-  )
-}
+  );
+};
