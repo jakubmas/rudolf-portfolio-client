@@ -1,13 +1,14 @@
-// import { useTheme } from '@material-ui/core/styles'
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
-import React from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   formHelperText: {
     position: 'absolute',
     bottom: '-2em',
+    [theme.breakpoints.down('xs')]: {
+      bottom: '-3em',
+    },
   },
   cssLabel: {
     '&$cssFocused': {
@@ -33,12 +34,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   notchedOutline: {},
 }));
 
-export const Input = ({ label, value, setValue, helperText, style = {} }) => {
+export const Input = ({
+  label,
+  value,
+  setValue,
+  helperText,
+  type = 'text',
+  style = {},
+}) => {
   const classes = useStyles();
 
   return (
     <TextField
       label={label}
+      type={type}
       fullWidth
       variant="outlined"
       margin="dense"

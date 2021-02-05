@@ -1,8 +1,10 @@
 import Grid from '@material-ui/core/Grid';
-// import { useTheme } from '@material-ui/core/styles'
+import { useTheme } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
+import { CustomButton } from '../../components/ui/CustomButton';
 import { Input } from '../../components/ui/Input';
 import { LayoutCenterItem, LayoutContainer } from '../../containers/Layout';
 
@@ -13,21 +15,30 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: '#FFFFFF',
     border: `1px solid ${theme.palette.text.primary}`,
     borderRadius: '1.2rem',
+    [theme.breakpoints.down('xs')]: {
+      backgroundColor: 'transparent',
+      border: 'none',
+    },
   },
   inputContainer: {
-    width: '25rem',
     padding: '1.2rem',
+    width: '20rem',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
   },
 }));
 
 export default function Login() {
   const classes = useStyles();
+  const theme = useTheme();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailHelper, setEmailHelper] = useState('');
   const [passwordHelper, setPasswordHelper] = useState('');
   // const theme = useTheme()
+  const matchesSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   const onChangeEmail = (e) => {
     let valid;
@@ -79,10 +90,22 @@ export default function Login() {
             <Input
               label="password"
               value={password}
+              type="password"
               helperText={passwordHelper}
               setValue={onChangePassword}
             />
           </Grid>
+
+          <CustomButton
+            label="Login"
+            color="secondary"
+            style={{
+              marginTop: '1.5rem',
+              width: '6rem',
+              borderRadius: '0.7rem',
+              color: 'white',
+            }}
+          />
         </Grid>
       </LayoutCenterItem>
     </LayoutContainer>
