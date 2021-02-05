@@ -1,9 +1,9 @@
 import Grid from '@material-ui/core/Grid';
 // import { useTheme } from '@material-ui/core/styles'
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
-import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
-import React from 'react';
+import React, { useState } from 'react';
+import { Input } from '../../components/ui/Input';
 import { LayoutCenterItem, LayoutContainer } from '../../containers/Layout';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -14,23 +14,47 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: `1px solid ${theme.palette.text.primary}`,
     borderRadius: '1.2rem',
   },
-  cssLabel: {
-    '&$cssFocused': {
-      color: 'red',
-    },
+  inputContainer: {
+    width: '25rem',
+    padding: '1.2rem',
   },
-  cssOutlinedInput: {
-    '&$cssFocused $notchedOutline': {
-      borderColor: 'red',
-    },
-  },
-  cssFocused: {},
-  notchedOutline: {},
 }));
 
 export default function Login() {
   const classes = useStyles();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailHelper, setEmailHelper] = useState('');
+  const [passwordHelper, setPasswordHelper] = useState('');
   // const theme = useTheme()
+
+  const onChangeEmail = (e) => {
+    let valid;
+
+    setEmail(e.target.value);
+    valid = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value);
+
+    if (!valid) {
+      setEmailHelper('Invalid email');
+    } else {
+      setEmailHelper('');
+    }
+  };
+
+  const onChangePassword = (e) => {
+    let valid;
+    setPassword(e.target.value);
+    valid = e.target.value.trim().length > 4;
+
+    if (!valid && e.target.value.trim().length === 0) {
+      setPasswordHelper('Password is required');
+    } else if (!valid) {
+      setPasswordHelper('Password has to be longer than 4 character');
+    } else {
+      setPasswordHelper('');
+    }
+  };
 
   return (
     <LayoutContainer breakdownPoint="md">
@@ -43,28 +67,22 @@ export default function Login() {
           justify="center"
           className={classes.form}
         >
-          <Grid item>
-            <TextField label="E-mail" id="" variant="outlined" margin="dense" />
+          <Grid item className={classes.inputContainer}>
+            <Input
+              id="email"
+              label="email"
+              value={email}
+              helperText={emailHelper}
+              setValue={onChangeEmail}
+            />
           </Grid>
-          <Grid item>
-            <TextField
-              label="Password"
-              id=""
-              variant="outlined"
-              margin="dense"
-              InputLabelProps={{
-                classes: {
-                  root: classes.cssLabel,
-                  focused: classes.cssFocused,
-                },
-              }}
-              InputProps={{
-                classes: {
-                  root: classes.cssOutlinedInput,
-                  focused: classes.cssFocused,
-                  notchedOutline: classes.notchedOutline,
-                },
-              }}
+          <Grid item className={classes.inputContainer}>
+            <Input
+              id="password"
+              label="password"
+              value={password}
+              helperText={passwordHelper}
+              setValue={onChangePassword}
             />
           </Grid>
         </Grid>
