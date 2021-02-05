@@ -5,6 +5,10 @@ import { makeStyles } from '@material-ui/styles';
 import React from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
+  formHelperText: {
+    position: 'absolute',
+    bottom: '-2em',
+  },
   cssLabel: {
     '&$cssFocused': {
       color: theme.palette.text.primary,
@@ -68,6 +72,11 @@ export const Input = ({
           }`,
           focused: classes.cssFocused,
           notchedOutline: classes.notchedOutline,
+        },
+      }}
+      FormHelperTextProps={{
+        classes: {
+          root: classes.formHelperText,
         },
       }}
     />
