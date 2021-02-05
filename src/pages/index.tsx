@@ -1,12 +1,12 @@
-import { Typography } from '@material-ui/core'
-import { useTheme } from '@material-ui/core/styles'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { makeStyles } from '@material-ui/styles'
-import React from 'react'
-import { ImageContainer } from '../src/components/ui/ImageContainer'
-import { SideContentContainer } from '../src/components/ui/SideContentContainer'
-import { LayoutCenterItem, LayoutContainer } from '../src/containers/Layout'
+import { Typography } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
+import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { makeStyles } from '@material-ui/styles';
+import React from 'react';
+import { ImageContainer } from '../components/ui/ImageContainer';
+import { SideContentContainer } from '../components/ui/SideContentContainer';
+import { LayoutCenterItem, LayoutContainer } from '../containers/Layout';
 
 const useStyles = makeStyles((theme: Theme) => ({
   rotatedLogo: {
@@ -21,12 +21,12 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '2.2rem'
     }
   }
-}))
+}));
 
-export default function Index() {
-  const classes = useStyles()
-  const theme = useTheme()
-  const matchesMedium = useMediaQuery(theme.breakpoints.down('md'))
+export const index: React.FC = () => {
+  const classes = useStyles();
+  const theme = useTheme();
+  const matchesMedium = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <LayoutContainer breakdownPoint="md">
@@ -51,5 +51,5 @@ export default function Index() {
         <SideContentContainer />
       </LayoutCenterItem>
     </LayoutContainer>
-  )
-}
+  );
+};

@@ -3,9 +3,9 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Footer } from '../src/components/ui/Footer';
-import { Header } from '../src/components/ui/Header';
-import theme from '../src/components/ui/theme';
+import { Footer } from '../components/ui/Footer';
+import { Header } from '../components/ui/Header';
+import theme from '../components/ui/theme';
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
@@ -40,5 +40,5 @@ export default function MyApp(props) {
 
 MyApp.propTypes = {
   Component: PropTypes.elementType.isRequired,
-  pageProps: PropTypes.object.isRequired,
+  pageProps: PropTypes.object.isRequired
 };

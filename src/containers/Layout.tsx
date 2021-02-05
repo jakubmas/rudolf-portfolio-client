@@ -1,11 +1,11 @@
-import { Grid, GridSize } from '@material-ui/core'
-import { useTheme } from '@material-ui/core/styles'
-import { Breakpoint } from '@material-ui/core/styles/createBreakpoints'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { Grid, GridSize } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
+import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
+import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 // import { useLocation } from 'react-router-dom'
-import { makeStyles } from '@material-ui/styles'
-import React, { FunctionComponent } from 'react'
+import { makeStyles } from '@material-ui/styles';
+import React, { FunctionComponent } from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -29,21 +29,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '80%',
     padding: '2rem 2rem'
   }
-}))
+}));
 
 type LayoutContainerProps = {
-  breakdownPoint: Breakpoint
-  layoutClass?: string
-}
+  breakdownPoint: Breakpoint;
+  layoutClass?: string;
+};
 
-export const LayoutContainer: FunctionComponent<LayoutContainerProps> = ({
+export const LayoutContainer: React.FC<LayoutContainerProps> = ({
   breakdownPoint,
   layoutClass,
   children
 }) => {
-  const classes = useStyles()
-  const theme = useTheme()
-  const matchesMedium = useMediaQuery(theme.breakpoints.down(breakdownPoint))
+  const classes = useStyles();
+  const theme = useTheme();
+  const matchesMedium = useMediaQuery(theme.breakpoints.down(breakdownPoint));
   // const { pathname } = useLocation()
 
   // useEffect(() => {
@@ -58,14 +58,14 @@ export const LayoutContainer: FunctionComponent<LayoutContainerProps> = ({
     >
       {children}
     </Grid>
-  )
-}
+  );
+};
 
 type LayoutCenterItemProps = {
-  columnsNumber: GridSize
-  breakdownPoint: Breakpoint
-  layoutClass?: string
-}
+  columnsNumber: GridSize;
+  breakdownPoint: Breakpoint;
+  layoutClass?: string;
+};
 
 export const LayoutCenterItem: FunctionComponent<LayoutCenterItemProps> = ({
   columnsNumber,
@@ -73,9 +73,9 @@ export const LayoutCenterItem: FunctionComponent<LayoutCenterItemProps> = ({
   layoutClass,
   children
 }) => {
-  const classes = useStyles()
-  const theme = useTheme()
-  const matchesMedium = useMediaQuery(theme.breakpoints.down(breakdownPoint))
+  const classes = useStyles();
+  const theme = useTheme();
+  const matchesMedium = useMediaQuery(theme.breakpoints.down(breakdownPoint));
 
   return (
     <Grid
@@ -87,5 +87,5 @@ export const LayoutCenterItem: FunctionComponent<LayoutCenterItemProps> = ({
     >
       {children}
     </Grid>
-  )
-}
+  );
+};

@@ -1,13 +1,13 @@
-import React, { FunctionComponent } from 'react'
-import Grid from '@material-ui/core/Grid'
-import { makeStyles } from '@material-ui/styles'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import { Typography } from '@material-ui/core'
-import IconButton from '@material-ui/core/IconButton'
+import { Typography } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
+import FacebookIcon from '@material-ui/icons/Facebook';
+import InstagramIcon from '@material-ui/icons/Instagram';
+import { makeStyles } from '@material-ui/styles';
+import React from 'react';
 
-import FacebookIcon from '@material-ui/icons/Facebook'
-import InstagramIcon from '@material-ui/icons/Instagram'
-import AlternateEmailIcon from '@material-ui/icons/AlternateEmail'
 // import BehanceIcon from '../../assets/icons/behance-icon.svg'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -49,9 +49,9 @@ const useStyles = makeStyles((theme: Theme) => {
       }
     },
     textRegular: {
-      fontSize: '0.8rem',
+      fontSize: '0.9rem',
       lineHeight: '1.7rem',
-      fontWeight: 100,
+      fontWeight: 300,
       marginRight: '3rem',
       width: '100%',
       paddingBottom: '2rem',
@@ -67,8 +67,8 @@ const useStyles = makeStyles((theme: Theme) => {
     iconsContainer: {
       paddingLeft: '2rem'
     }
-  }
-})
+  };
+});
 
 // [
 //   {
@@ -102,17 +102,17 @@ const useStyles = makeStyles((theme: Theme) => {
 // ]
 
 type SideContentContainerProps = {
-  containerEast?: Boolean
-  containerWest?: Boolean
-  iconsSection?: Boolean
-}
+  containerEast?: Boolean;
+  containerWest?: Boolean;
+  iconsSection?: Boolean;
+};
 
-export const SideContentContainer: FunctionComponent<SideContentContainerProps> = (
+export const SideContentContainer: React.FC<SideContentContainerProps> = (
   props
 ) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const { containerEast, containerWest, iconsSection } = props
+  const { containerEast, containerWest, iconsSection } = props;
 
   return (
     <Grid container style={{ height: '100%' }}>
@@ -181,5 +181,5 @@ export const SideContentContainer: FunctionComponent<SideContentContainerProps> 
         </Grid>
       )}
     </Grid>
-  )
-}
+  );
+};

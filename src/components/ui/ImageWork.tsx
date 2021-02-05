@@ -1,12 +1,12 @@
-import React, { FunctionComponent, useState } from 'react'
-import { makeStyles } from '@material-ui/styles'
-import { useTheme } from '@material-ui/core/styles'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import { Grid } from '@material-ui/core'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import Card from '@material-ui/core/Card'
-import CardMedia from '@material-ui/core/CardMedia'
-import aboutMePhoto from '../../assets/photos/AboutMe-photo.png'
+import { Grid } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
+import { useTheme } from '@material-ui/core/styles';
+import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { makeStyles } from '@material-ui/styles';
+import React, { useState } from 'react';
+import aboutMePhoto from '../../assets/photos/AboutMe-photo.png';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -24,19 +24,19 @@ const useStyles = makeStyles((theme: Theme) => ({
   media: {
     height: '100%'
   }
-}))
+}));
 
-export const ImageWork: FunctionComponent = () => {
-  const classes = useStyles()
-  const theme = useTheme()
-  const matchesMedium = useMediaQuery(theme.breakpoints.down('md'))
+export const ImageWork: React.FC = () => {
+  const classes = useStyles();
+  const theme = useTheme();
+  const matchesMedium = useMediaQuery(theme.breakpoints.down('md'));
 
-  const [cardHovered, setCardHovered] = useState(false)
+  const [cardHovered, setCardHovered] = useState(false);
 
   const toggleRaised = () => {
-    const state = cardHovered
-    setCardHovered(!state)
-  }
+    const state = cardHovered;
+    setCardHovered(!state);
+  };
 
   return (
     <Grid
@@ -54,5 +54,5 @@ export const ImageWork: FunctionComponent = () => {
         title="Main photo for session "
       />
     </Grid>
-  )
-}
+  );
+};
