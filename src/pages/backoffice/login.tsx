@@ -1,10 +1,8 @@
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { useTheme } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
-import { CustomButton } from '../../components/ui/CustomButton';
 import { Input } from '../../components/ui/Input';
 import { LayoutCenterItem, LayoutContainer } from '../../containers/Layout';
 
@@ -27,18 +25,21 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: '100%',
     },
   },
+  button: {
+    marginTop: '1.5rem',
+    width: '6rem',
+    borderRadius: '0.7rem',
+    color: 'white',
+  },
 }));
 
 export default function Login() {
   const classes = useStyles();
-  const theme = useTheme();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailHelper, setEmailHelper] = useState('');
   const [passwordHelper, setPasswordHelper] = useState('');
-  // const theme = useTheme()
-  const matchesSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   const onChangeEmail = (e) => {
     let valid;
@@ -96,16 +97,13 @@ export default function Login() {
             />
           </Grid>
 
-          <CustomButton
-            label="Login"
+          <Button
+            variant="contained"
             color="secondary"
-            style={{
-              marginTop: '1.5rem',
-              width: '6rem',
-              borderRadius: '0.7rem',
-              color: 'white',
-            }}
-          />
+            className={classes.button}
+          >
+            Login
+          </Button>
         </Grid>
       </LayoutCenterItem>
     </LayoutContainer>
