@@ -1,18 +1,55 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
+import { Cache, cacheExchange, QueryInput } from '@urql/exchange-graphcache';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { createClient, Provider } from 'urql';
+import { createClient, dedupExchange, fetchExchange, Provider } from 'urql';
 import { Footer } from '../components/ui/Footer';
 import { Header } from '../components/ui/Header';
 import theme from '../components/ui/theme';
+import { LoginMutation, MeDocument, MeQuery } from '../generated/graphql';
+
+function betterUpdateQuery<Result, Query>(
+  cache: Cache,
+  qi: QueryInput,
+  result: any,
+  fn: (r: Result, q: Query) => Query
+) {
+  return cache.updateQuery(qi, (data) => fn(result, data as any) as any);
+}
 
 const client = createClient({
   url: 'http://localhost:4000/graphql',
   fetchOptions: {
     credentials: 'include'
-  }
+  },
+  exchanges: [
+    dedupExchange,
+    cacheExchange({
+      updates: {
+        Mutation: {
+          login: (_result, args, cache, info) => {
+            betterUpdateQuery<LoginMutation, MeQuery>(
+              cache,
+              { query: MeDocument },
+              _result,
+              (result, query) => {
+                if (result.login.errors) {
+                  return query;
+                } else {
+                  return {
+                    me: result.login.user
+                  };
+                }
+              }
+            );
+          }
+        }
+      }
+    }),
+    fetchExchange
+  ]
 });
 
 export default function MyApp(props) {

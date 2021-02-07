@@ -96,6 +96,11 @@ export type UsernamePasswordInput = {
   password: Scalars['String'];
 };
 
+export type UserFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'id' | 'username'>
+);
+
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -111,7 +116,7 @@ export type LoginMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>>, user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'createdAt' | 'updatedAt' | 'username' | 'password'>
+      & UserFragment
     )> }
   ) }
 );
@@ -123,11 +128,16 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username'>
+    & UserFragment
   )> }
 );
 
-
+export const UserFragmentDoc = gql`
+    fragment user on User {
+  id
+  username
+}
+    `;
 export const LoginDocument = gql`
     mutation Login($username: String!, $password: String!) {
   login(options: {username: $username, password: $password}) {
@@ -136,15 +146,11 @@ export const LoginDocument = gql`
       message
     }
     user {
-      id
-      createdAt
-      updatedAt
-      username
-      password
+      ...user
     }
   }
 }
-    `;
+    ${UserFragmentDoc}`;
 
 export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
@@ -152,11 +158,10 @@ export function useLoginMutation() {
 export const MeDocument = gql`
     query Me {
   me {
-    id
-    username
+    ...user
   }
 }
-    `;
+    ${UserFragmentDoc}`;
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });

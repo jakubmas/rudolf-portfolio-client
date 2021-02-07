@@ -27,7 +27,7 @@ interface Tab {
 }
 
 // TODO Refactor Header component to smaller pieces
-
+// TODO SSR fix, when you reload a page on a backoffice the navbar is undefined (steps to reproduce: login, refresh -> navbar should be empty)
 const useStyles = makeStyles((theme: Theme) => {
   return {
     toolbarMargin: {
@@ -213,27 +213,27 @@ export const Header: React.FC = () => {
 
   let backofficeTabs = [
     {
-      to: '/photos',
+      to: '/backoffice/photos',
       label: 'Photos',
       active: false
     },
     {
-      to: '/landing',
+      to: '/backoffice/landing',
       label: 'Landing',
       active: false
     },
     {
-      to: '/work',
+      to: '/backoffice/work',
       label: 'Work',
       active: false
     },
     {
-      to: '/about',
+      to: '/backoffice/about',
       label: 'About',
       active: false
     },
     {
-      to: '/contact',
+      to: '/backoffice/contact',
       label: 'Contact',
       active: false
     }
@@ -269,6 +269,7 @@ export const Header: React.FC = () => {
 
   useEffect(() => {
     let currentTabs = isBackoffice ? backoffice : userPage;
+
     let newArray = [...currentTabs];
     newArray.forEach((element) => {
       if (element.to === window.location.pathname) element.active = true;
@@ -283,24 +284,27 @@ export const Header: React.FC = () => {
   }, [matchesExtraSmall, matchesSmall]);
 
   const renderTabs = () => {
-    return tabs.map((tab, i) => (
-      <div className={classes.tabButtonContainer} key={tab.label}>
-        <NextLink href={tab.to} passHref>
-          <Button
-            disableRipple
-            className={classes.tab}
-            onClick={() => handleChange(i, tab)}
-          >
-            {tab.label}
-          </Button>
-        </NextLink>
-        {
-          <div
-            className={tab.active ? classes.tabActive : classes.tabInactive}
-          />
-        }
-      </div>
-    ));
+    return tabs.map((tab, i) => {
+      console.log('tab', tab);
+      return (
+        <div className={classes.tabButtonContainer} key={tab.label}>
+          <NextLink href={tab.to} passHref>
+            <Button
+              disableRipple
+              className={classes.tab}
+              onClick={() => handleChange(i, tab)}
+            >
+              {tab.label}
+            </Button>
+          </NextLink>
+          {
+            <div
+              className={tab.active ? classes.tabActive : classes.tabInactive}
+            />
+          }
+        </div>
+      );
+    });
   };
 
   const logoButton = (
