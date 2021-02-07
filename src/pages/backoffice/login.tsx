@@ -3,11 +3,13 @@ import Grid from '@material-ui/core/Grid';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { makeStyles } from '@material-ui/styles';
 import { useFormik } from 'formik';
+import { useRouter } from 'next/router';
 import React from 'react';
 import * as yup from 'yup';
 import { Input } from '../../components/ui/Input';
 import { LayoutCenterItem, LayoutContainer } from '../../containers/Layout';
 import { useLoginMutation } from '../../generated/graphql';
+import { toErrorMap } from '../../utils/toErrorMap';
 
 const useStyles = makeStyles((theme: Theme) => ({
   form: {
@@ -36,29 +38,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const LOGIN_MUTATION = `
-  mutation Login($username: String!, $password: String!){
-    login(options: {
-      username: $username,
-      password: $password
-    }){
-      errors{
-        field
-        message
-      }
-      user {
-        id
-        createdAt
-        updatedAt
-        username
-        password
-      }
-    }
-  }
-`;
-
 const login: React.FC = () => {
   const classes = useStyles();
+  const router = useRouter();
 
   const [, login] = useLoginMutation();
 
@@ -76,8 +58,16 @@ const login: React.FC = () => {
       password: ''
     },
     validationSchema: validationSchema,
-    onSubmit: async (v) => {
-      await login({ username: v.username, password: v.password });
+    onSubmit: async (v, { setErrors }) => {
+      const response = await login({
+        username: v.username,
+        password: v.password
+      });
+      if (response.data.login.errors) {
+        setErrors(toErrorMap(response.data.login.errors));
+      } else if (response.data.login.user) {
+        router.push('/');
+      }
     }
   });
 
