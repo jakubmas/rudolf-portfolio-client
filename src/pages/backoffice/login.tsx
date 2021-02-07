@@ -2,8 +2,10 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { makeStyles } from '@material-ui/styles';
-import React, { useState } from 'react';
+import { useFormik } from 'formik';
+import React from 'react';
 import { useMutation } from 'urql';
+import * as yup from 'yup';
 import { Input } from '../../components/ui/Input';
 import { LayoutCenterItem, LayoutContainer } from '../../containers/Layout';
 
@@ -58,49 +60,32 @@ const LOGIN_MUTATION = `
 const login: React.FC = () => {
   const classes = useStyles();
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [usernameHelper, setUsernameHelper] = useState('');
-  const [passwordHelper, setPasswordHelper] = useState('');
   const [, login] = useMutation(LOGIN_MUTATION);
 
-  const onChangeusername = (e) => {
-    let valid;
+  const validationSchema = yup.object({
+    username: yup.string().required('Username is required'),
+    password: yup
+      .string()
+      .min(4, 'Password has to be longer than 4 character')
+      .required('Password is required')
+  });
 
-    setUsername(e.target.value);
-    valid = e.target.value.length > 0;
-    // valid = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value);
-
-    if (!valid) {
-      setUsernameHelper('Invalid username');
-    } else {
-      setUsernameHelper('');
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: ''
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (v) => {
+      console.log('v', v);
+      await login({ username: v.username, password: v.password });
     }
-  };
-
-  const onChangePassword = (e) => {
-    let valid;
-    setPassword(e.target.value);
-    valid = e.target.value.trim().length > 4;
-
-    if (!valid && e.target.value.trim().length === 0) {
-      setPasswordHelper('Password is required');
-    } else if (!valid) {
-      setPasswordHelper('Password has to be longer than 4 character');
-    } else {
-      setPasswordHelper('');
-    }
-  };
-
-  const loginHandler = async (e) => {
-    e.preventDefault();
-    await login({ username, password });
-  };
+  });
 
   return (
     <LayoutContainer breakdownPoint="md">
       <LayoutCenterItem breakdownPoint="sm" columnsNumber={12}>
-        <form onSubmit={loginHandler}>
+        <form onSubmit={formik.handleSubmit}>
           <Grid
             item
             container
@@ -111,19 +96,29 @@ const login: React.FC = () => {
           >
             <Grid item className={classes.inputContainer}>
               <Input
-                label="username"
-                value={username}
-                helperText={usernameHelper}
-                setValue={onChangeusername}
+                id="username"
+                name="username"
+                label="Username"
+                value={formik.values.username}
+                setValue={formik.handleChange}
+                error={
+                  formik.touched.username && Boolean(formik.errors.username)
+                }
+                helperText={formik.touched.username && formik.errors.username}
               />
             </Grid>
             <Grid item className={classes.inputContainer}>
               <Input
-                label="password"
-                value={password}
+                id="password"
+                name="password"
+                label="Passowrd"
                 type="password"
-                helperText={passwordHelper}
-                setValue={onChangePassword}
+                value={formik.values.password}
+                setValue={formik.handleChange}
+                error={
+                  formik.touched.password && Boolean(formik.errors.password)
+                }
+                helperText={formik.touched.password && formik.errors.password}
               />
             </Grid>
 
