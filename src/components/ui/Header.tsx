@@ -9,12 +9,16 @@ import { useTheme } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Toolbar from '@material-ui/core/Toolbar';
+import Tooltip from '@material-ui/core/Tooltip';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import CloseIcon from '@material-ui/icons/Close';
+import ExitToApp from '@material-ui/icons/ExitToApp';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/styles';
-import Link from 'next/link';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useMeQuery } from '../../generated/graphql';
 
 interface Tab {
   to: string;
@@ -63,7 +67,6 @@ const useStyles = makeStyles((theme: Theme) => {
       }
     },
     languageToggler: {
-      marginRight: '2rem',
       fontSize: '0.7rem'
     },
     bottomLine: {
@@ -149,6 +152,14 @@ const useStyles = makeStyles((theme: Theme) => {
         backgroundColor: 'transparent'
       }
     },
+    drawerLogoutButton: {
+      // marginBottom: '10vh',
+      justifyContent: 'center',
+      '& .MuiTypography-root': {
+        fontSize: '1.1rem',
+        fontWeight: 300
+      }
+    },
     drawerLanguageToggler: {
       marginBottom: '10vh',
       justifyContent: 'center',
@@ -164,12 +175,53 @@ export const Header: React.FC = () => {
   const theme = useTheme();
   const classes = useStyles();
 
+  const router = useRouter();
+  const isBackoffice =
+    router.pathname.substring(1).split('/')[0] === 'backoffice';
+
+  const [{ data, fetching }] = useMeQuery();
+
   const iOS =
     (process as any).browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
   const matchesSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const matchesExtraSmall = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const [tabs, setTabs] = useState<Tab[]>([
+  const userPage = [
+    {
+      to: '/work',
+      label: 'Work',
+      active: false
+    },
+    {
+      to: '/about',
+      label: 'About',
+      active: false
+    },
+    {
+      to: '/contact',
+      label: 'Contact',
+      active: false
+    },
+    {
+      to: '/backoffice/login',
+      label: 'Backoffice',
+      active: false
+    }
+  ];
+
+  let backoffice = [];
+
+  let backofficeTabs = [
+    {
+      to: '/photos',
+      label: 'Photos',
+      active: false
+    },
+    {
+      to: '/landing',
+      label: 'Landing',
+      active: false
+    },
     {
       to: '/work',
       label: 'Work',
@@ -185,7 +237,17 @@ export const Header: React.FC = () => {
       label: 'Contact',
       active: false
     }
-  ]);
+  ];
+
+  if (fetching) {
+  } else if (!data?.me) {
+    backoffice = [];
+  } else {
+    backoffice = backofficeTabs;
+  }
+
+  const [tabs, setTabs] = useState<Tab[]>(isBackoffice ? backoffice : userPage);
+
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const handleChange = (index: number, activeTab: Tab) => {
@@ -206,13 +268,13 @@ export const Header: React.FC = () => {
   };
 
   useEffect(() => {
-    let newArray = [...tabs];
+    let currentTabs = isBackoffice ? backoffice : userPage;
+    let newArray = [...currentTabs];
     newArray.forEach((element) => {
       if (element.to === window.location.pathname) element.active = true;
     });
     setTabs(newArray);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     if (!matchesSmall && !matchesExtraSmall) {
@@ -223,7 +285,7 @@ export const Header: React.FC = () => {
   const renderTabs = () => {
     return tabs.map((tab, i) => (
       <div className={classes.tabButtonContainer} key={tab.label}>
-        <Link href={tab.to} passHref>
+        <NextLink href={tab.to} passHref>
           <Button
             disableRipple
             className={classes.tab}
@@ -231,7 +293,7 @@ export const Header: React.FC = () => {
           >
             {tab.label}
           </Button>
-        </Link>
+        </NextLink>
         {
           <div
             className={tab.active ? classes.tabActive : classes.tabInactive}
@@ -242,7 +304,7 @@ export const Header: React.FC = () => {
   };
 
   const logoButton = (
-    <Link href="/" passHref>
+    <NextLink href="/" passHref>
       <Button
         disableRipple
         className={classes.logoContainer}
@@ -257,7 +319,7 @@ export const Header: React.FC = () => {
           Maslowski
         </Typography>
       </Button>
-    </Link>
+    </NextLink>
   );
 
   const languageToggler = (
@@ -266,10 +328,22 @@ export const Header: React.FC = () => {
     </Typography>
   );
 
+  const logoutButton = data?.me && isBackoffice && (
+    <Tooltip title="logout">
+      <IconButton
+        // onClick={handleTogglelogoutButton}
+        disableRipple
+      >
+        <ExitToApp />
+      </IconButton>
+    </Tooltip>
+  );
+
   const largeHeader = (
     <>
       {logoButton}
       <div className={classes.tabsContainer}>{renderTabs()}</div>
+      {logoutButton}
       {languageToggler}
     </>
   );
@@ -302,7 +376,7 @@ export const Header: React.FC = () => {
             </ListItem>
             <div>
               {tabs.map((tab, i) => (
-                <Link href={tab.to} passHref key={tab.to}>
+                <NextLink href={tab.to} passHref key={tab.to}>
                   <ListItem
                     key={`${tab}${i}`}
                     button
@@ -319,9 +393,11 @@ export const Header: React.FC = () => {
                       {tab.label}
                     </ListItemText>
                   </ListItem>
-                </Link>
+                </NextLink>
               ))}
             </div>
+
+            <ListItem className={classes.drawerLogoutButton}>Logout</ListItem>
             <ListItem className={classes.drawerLanguageToggler}>
               {languageToggler}
             </ListItem>
