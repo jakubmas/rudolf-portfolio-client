@@ -2,7 +2,10 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { makeStyles } from '@material-ui/styles';
-import React, { useState } from 'react';
+import { useFormik } from 'formik';
+import React from 'react';
+import { useMutation } from 'urql';
+import * as yup from 'yup';
 import { Input } from '../../components/ui/Input';
 import { LayoutCenterItem, LayoutContainer } from '../../containers/Layout';
 
@@ -33,79 +36,111 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export const login: React.FC = () => {
+const LOGIN_MUTATION = `
+  mutation Login($username: String!, $password: String!){
+    login(options: {
+      username: $username,
+      password: $password
+    }){
+      errors{
+        field
+        message
+      }
+      user {
+        id
+        createdAt
+        updatedAt
+        username
+        password
+      }
+    }
+  }
+`;
+
+const login: React.FC = () => {
   const classes = useStyles();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [emailHelper, setEmailHelper] = useState('');
-  const [passwordHelper, setPasswordHelper] = useState('');
+  const [, login] = useMutation(LOGIN_MUTATION);
 
-  const onChangeEmail = (e) => {
-    let valid;
+  const validationSchema = yup.object({
+    username: yup.string().required('Username is required'),
+    password: yup
+      .string()
+      .min(4, 'Password has to be longer than 4 character')
+      .required('Password is required')
+  });
 
-    setEmail(e.target.value);
-    valid = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value);
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: ''
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (v) => {
+      console.log('v', v);
+      console.log('formik', formik);
 
-    if (!valid) {
-      setEmailHelper('Invalid email');
-    } else {
-      setEmailHelper('');
+      await login({ username: v.username, password: v.password });
     }
-  };
-
-  const onChangePassword = (e) => {
-    let valid;
-    setPassword(e.target.value);
-    valid = e.target.value.trim().length > 4;
-
-    if (!valid && e.target.value.trim().length === 0) {
-      setPasswordHelper('Password is required');
-    } else if (!valid) {
-      setPasswordHelper('Password has to be longer than 4 character');
-    } else {
-      setPasswordHelper('');
-    }
-  };
+  });
 
   return (
     <LayoutContainer breakdownPoint="md">
       <LayoutCenterItem breakdownPoint="sm" columnsNumber={12}>
-        <Grid
-          item
-          container
-          direction="column"
-          alignItems="center"
-          justify="center"
-          className={classes.form}
-        >
-          <Grid item className={classes.inputContainer}>
-            <Input
-              label="email"
-              value={email}
-              helperText={emailHelper}
-              setValue={onChangeEmail}
-            />
-          </Grid>
-          <Grid item className={classes.inputContainer}>
-            <Input
-              label="password"
-              value={password}
-              type="password"
-              helperText={passwordHelper}
-              setValue={onChangePassword}
-            />
-          </Grid>
-
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.button}
+        <form onSubmit={formik.handleSubmit}>
+          <Grid
+            item
+            container
+            direction="column"
+            alignItems="center"
+            justify="center"
+            className={classes.form}
           >
-            Login
-          </Button>
-        </Grid>
+            <Grid item className={classes.inputContainer}>
+              <Input
+                id="username"
+                name="username"
+                label="Username"
+                value={formik.values.username}
+                setValue={formik.handleChange}
+                error={
+                  formik.touched.username && Boolean(formik.errors.username)
+                }
+                helperText={formik.touched.username && formik.errors.username}
+              />
+            </Grid>
+            <Grid item className={classes.inputContainer}>
+              <Input
+                id="password"
+                name="password"
+                label="Passowrd"
+                type="password"
+                value={formik.values.password}
+                setValue={formik.handleChange}
+                error={
+                  formik.touched.password && Boolean(formik.errors.password)
+                }
+                helperText={formik.touched.password && formik.errors.password}
+              />
+            </Grid>
+
+            <Button
+              type="submit"
+              variant="contained"
+              color="secondary"
+              disabled={
+                Boolean(formik.errors.password) ||
+                Boolean(formik.errors.username)
+              }
+              className={classes.button}
+            >
+              Login
+            </Button>
+          </Grid>
+        </form>
       </LayoutCenterItem>
     </LayoutContainer>
   );
 };
+
+export default login;

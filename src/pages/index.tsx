@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export const index: React.FC = () => {
+const index: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
   const matchesMedium = useMediaQuery(theme.breakpoints.down('md'));
@@ -53,3 +53,5 @@ export const index: React.FC = () => {
     </LayoutContainer>
   );
 };
+
+export default index;

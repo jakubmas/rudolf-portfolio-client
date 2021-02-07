@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export const about: React.FC = () => {
+const about: React.FC = () => {
   const classes = useStyles();
 
   return (
@@ -34,3 +34,5 @@ export const about: React.FC = () => {
     </LayoutContainer>
   );
 };
+
+export default about;

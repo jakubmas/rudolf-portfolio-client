@@ -35,9 +35,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const Input = ({
+  id,
+  name,
   label,
   value,
   setValue,
+  error,
   helperText,
   type = 'text',
   style = {}
@@ -46,31 +49,29 @@ export const Input = ({
 
   return (
     <TextField
+      id={id}
+      name={name}
       label={label}
       type={type}
       fullWidth
       variant="outlined"
       margin="dense"
-      error={helperText.length !== 0}
+      error={error}
       helperText={helperText}
       value={value}
       onChange={setValue}
       style={style}
       InputLabelProps={{
         classes: {
-          root: `${
-            helperText.length !== 0 ? classes.cssErrorLabel : classes.cssLabel
-          }`,
+          root: error ? classes.cssErrorLabel : classes.cssLabel,
           focused: classes.cssFocused
         }
       }}
       InputProps={{
         classes: {
-          root: `${
-            helperText.length !== 0
-              ? classes.cssErrorOutlinedInput
-              : classes.cssOutlinedInput
-          }`,
+          root: error
+            ? classes.cssErrorOutlinedInput
+            : classes.cssOutlinedInput,
           focused: classes.cssFocused,
           notchedOutline: classes.notchedOutline
         }

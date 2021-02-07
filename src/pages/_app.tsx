@@ -3,9 +3,17 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { createClient, Provider } from 'urql';
 import { Footer } from '../components/ui/Footer';
 import { Header } from '../components/ui/Header';
 import theme from '../components/ui/theme';
+
+const client = createClient({
+  url: 'http://localhost:4000/graphql',
+  fetchOptions: {
+    credentials: 'include'
+  }
+});
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
@@ -19,7 +27,7 @@ export default function MyApp(props) {
   }, []);
 
   return (
-    <React.Fragment>
+    <Provider value={client}>
       <Head>
         <title>My page</title>
         <meta
@@ -34,7 +42,7 @@ export default function MyApp(props) {
         <Component {...pageProps} />
         <Footer />
       </ThemeProvider>
-    </React.Fragment>
+    </Provider>
   );
 }
 
