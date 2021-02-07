@@ -77,9 +77,6 @@ const login: React.FC = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (v) => {
-      console.log('v', v);
-      console.log('formik', formik);
-
       await login({ username: v.username, password: v.password });
     }
   });
