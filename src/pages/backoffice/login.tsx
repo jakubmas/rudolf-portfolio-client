@@ -4,10 +4,10 @@ import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { makeStyles } from '@material-ui/styles';
 import { useFormik } from 'formik';
 import React from 'react';
-import { useMutation } from 'urql';
 import * as yup from 'yup';
 import { Input } from '../../components/ui/Input';
 import { LayoutCenterItem, LayoutContainer } from '../../containers/Layout';
+import { useLoginMutation } from '../../generated/graphql';
 
 const useStyles = makeStyles((theme: Theme) => ({
   form: {
@@ -60,7 +60,7 @@ const LOGIN_MUTATION = `
 const login: React.FC = () => {
   const classes = useStyles();
 
-  const [, login] = useMutation(LOGIN_MUTATION);
+  const [, login] = useLoginMutation();
 
   const validationSchema = yup.object({
     username: yup.string().required('Username is required'),
