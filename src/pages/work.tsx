@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export const work: React.FC = () => {
+const work: React.FC = () => {
   const DummyArr = [
     true,
     false,
@@ -35,3 +35,5 @@ export const work: React.FC = () => {
     </LayoutContainer>
   );
 };
+
+export default work;

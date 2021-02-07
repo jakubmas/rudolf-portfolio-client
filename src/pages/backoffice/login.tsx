@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
+import { useMutation } from 'urql';
 import { Input } from '../../components/ui/Input';
 import { LayoutCenterItem, LayoutContainer } from '../../containers/Layout';
 
@@ -33,24 +34,47 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export const login: React.FC = () => {
+const LOGIN_MUTATION = `
+  mutation Login($username: String!, $password: String!){
+    login(options: {
+      username: $username,
+      password: $password
+    }){
+      errors{
+        field
+        message
+      }
+      user {
+        id
+        createdAt
+        updatedAt
+        username
+        password
+      }
+    }
+  }
+`;
+
+const login: React.FC = () => {
   const classes = useStyles();
 
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [emailHelper, setEmailHelper] = useState('');
+  const [usernameHelper, setUsernameHelper] = useState('');
   const [passwordHelper, setPasswordHelper] = useState('');
+  const [, login] = useMutation(LOGIN_MUTATION);
 
-  const onChangeEmail = (e) => {
+  const onChangeusername = (e) => {
     let valid;
 
-    setEmail(e.target.value);
-    valid = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value);
+    setUsername(e.target.value);
+    valid = e.target.value.length > 0;
+    // valid = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value);
 
     if (!valid) {
-      setEmailHelper('Invalid email');
+      setUsernameHelper('Invalid username');
     } else {
-      setEmailHelper('');
+      setUsernameHelper('');
     }
   };
 
@@ -68,44 +92,54 @@ export const login: React.FC = () => {
     }
   };
 
+  const loginHandler = async (e) => {
+    e.preventDefault();
+    await login({ username, password });
+  };
+
   return (
     <LayoutContainer breakdownPoint="md">
       <LayoutCenterItem breakdownPoint="sm" columnsNumber={12}>
-        <Grid
-          item
-          container
-          direction="column"
-          alignItems="center"
-          justify="center"
-          className={classes.form}
-        >
-          <Grid item className={classes.inputContainer}>
-            <Input
-              label="email"
-              value={email}
-              helperText={emailHelper}
-              setValue={onChangeEmail}
-            />
-          </Grid>
-          <Grid item className={classes.inputContainer}>
-            <Input
-              label="password"
-              value={password}
-              type="password"
-              helperText={passwordHelper}
-              setValue={onChangePassword}
-            />
-          </Grid>
-
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.button}
+        <form onSubmit={loginHandler}>
+          <Grid
+            item
+            container
+            direction="column"
+            alignItems="center"
+            justify="center"
+            className={classes.form}
           >
-            Login
-          </Button>
-        </Grid>
+            <Grid item className={classes.inputContainer}>
+              <Input
+                label="username"
+                value={username}
+                helperText={usernameHelper}
+                setValue={onChangeusername}
+              />
+            </Grid>
+            <Grid item className={classes.inputContainer}>
+              <Input
+                label="password"
+                value={password}
+                type="password"
+                helperText={passwordHelper}
+                setValue={onChangePassword}
+              />
+            </Grid>
+
+            <Button
+              type="submit"
+              variant="contained"
+              color="secondary"
+              className={classes.button}
+            >
+              Login
+            </Button>
+          </Grid>
+        </form>
       </LayoutCenterItem>
     </LayoutContainer>
   );
 };
+
+export default login;

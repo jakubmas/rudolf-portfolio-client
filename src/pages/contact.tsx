@@ -4,7 +4,7 @@ import { LayoutBorder } from '../components/ui/LayoutBorder';
 import { SideContentContainer } from '../components/ui/SideContentContainer';
 import { LayoutCenterItem, LayoutContainer } from '../containers/Layout';
 
-export const contactPage: React.FC = () => {
+const contactPage: React.FC = () => {
   return (
     <LayoutContainer breakdownPoint="md">
       <LayoutCenterItem breakdownPoint="md" columnsNumber={7}>
@@ -20,3 +20,5 @@ export const contactPage: React.FC = () => {
     </LayoutContainer>
   );
 };
+
+export default contactPage;

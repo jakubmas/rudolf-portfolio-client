@@ -7,11 +7,13 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/styles": "^4.11.3",
     "clsx": "latest",
+    "graphql": "^15.5.0",
     "lodash.topairs": "^4.3.0",
     "next": "latest",
     "prop-types": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "urql": "^1.11.6"
   },
   "scripts": {
     "dev": "next",
