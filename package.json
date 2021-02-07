@@ -6,6 +6,7 @@
     "@material-ui/core": "latest",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/styles": "^4.11.3",
+    "@urql/exchange-graphcache": "^3.4.0",
     "clsx": "latest",
     "formik": "^2.2.6",
     "graphql": "^15.5.0",
