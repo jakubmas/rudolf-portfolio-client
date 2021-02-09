@@ -3,10 +3,12 @@ import { useTheme } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles } from '@material-ui/styles';
+import { withUrqlClient } from 'next-urql';
 import React from 'react';
 import { ImageContainer } from '../components/ui/ImageContainer';
 import { SideContentContainer } from '../components/ui/SideContentContainer';
 import { LayoutCenterItem, LayoutContainer } from '../containers/Layout';
+import { createUrqlClient } from '../utils/createUrqlClient';
 
 const useStyles = makeStyles((theme: Theme) => ({
   rotatedLogo: {
@@ -54,4 +56,4 @@ const index: React.FC = () => {
   );
 };
 
-export default index;
+export default withUrqlClient(createUrqlClient)(index);
