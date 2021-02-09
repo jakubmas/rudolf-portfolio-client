@@ -1,10 +1,12 @@
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { makeStyles } from '@material-ui/styles';
+import { withUrqlClient } from 'next-urql';
 import React from 'react';
 import { ImageContainer } from '../components/ui/ImageContainer';
 import { LayoutBorder } from '../components/ui/LayoutBorder';
 import { SideContentContainer } from '../components/ui/SideContentContainer';
 import { LayoutCenterItem, LayoutContainer } from '../containers/Layout';
+import { createUrqlClient } from '../utils/createUrqlClient';
 
 const useStyles = makeStyles((theme: Theme) => ({
   aboutPhoto: {
@@ -35,4 +37,4 @@ const about: React.FC = () => {
   );
 };
 
-export default about;
+export default withUrqlClient(createUrqlClient, { ssr: true })(about);

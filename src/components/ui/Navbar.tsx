@@ -18,7 +18,7 @@ import { makeStyles } from '@material-ui/styles';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { useMeQuery } from '../../generated/graphql';
+import { useLogoutMutation, useMeQuery } from '../../generated/graphql';
 
 interface Tab {
   to: string;
@@ -26,7 +26,7 @@ interface Tab {
   active: boolean;
 }
 
-// TODO Refactor Header component to smaller pieces
+// TODO Refactor Navbar component to smaller pieces
 // TODO SSR fix, when you reload a page on a backoffice the navbar is undefined (steps to reproduce: login, refresh -> navbar should be empty)
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => {
       ...theme.mixins.toolbar,
       marginBottom: '3em'
     },
-    headerContainer: {
+    navbarContainer: {
       position: 'fixed',
       top: 0,
       left: 0,
@@ -171,7 +171,7 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
-export const Header: React.FC = () => {
+export const Navbar: React.FC = () => {
   const theme = useTheme();
   const classes = useStyles();
 
@@ -180,6 +180,7 @@ export const Header: React.FC = () => {
     router.pathname.substring(1).split('/')[0] === 'backoffice';
 
   const [{ data, fetching }] = useMeQuery();
+  const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
 
   const iOS =
     (process as any).browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -284,27 +285,24 @@ export const Header: React.FC = () => {
   }, [matchesExtraSmall, matchesSmall]);
 
   const renderTabs = () => {
-    return tabs.map((tab, i) => {
-      console.log('tab', tab);
-      return (
-        <div className={classes.tabButtonContainer} key={tab.label}>
-          <NextLink href={tab.to} passHref>
-            <Button
-              disableRipple
-              className={classes.tab}
-              onClick={() => handleChange(i, tab)}
-            >
-              {tab.label}
-            </Button>
-          </NextLink>
-          {
-            <div
-              className={tab.active ? classes.tabActive : classes.tabInactive}
-            />
-          }
-        </div>
-      );
-    });
+    return tabs.map((tab, i) => (
+      <div className={classes.tabButtonContainer} key={tab.label}>
+        <NextLink href={tab.to} passHref>
+          <Button
+            disableRipple
+            className={classes.tab}
+            onClick={() => handleChange(i, tab)}
+          >
+            {tab.label}
+          </Button>
+        </NextLink>
+        {
+          <div
+            className={tab.active ? classes.tabActive : classes.tabInactive}
+          />
+        }
+      </div>
+    ));
   };
 
   const logoButton = (
@@ -335,15 +333,18 @@ export const Header: React.FC = () => {
   const logoutButton = data?.me && isBackoffice && (
     <Tooltip title="logout">
       <IconButton
-        // onClick={handleTogglelogoutButton}
+        onClick={() => {
+          logout();
+        }}
         disableRipple
+        disabled={logoutFetching}
       >
         <ExitToApp />
       </IconButton>
     </Tooltip>
   );
 
-  const largeHeader = (
+  const largeNavbar = (
     <>
       {logoButton}
       <div className={classes.tabsContainer}>{renderTabs()}</div>
@@ -424,10 +425,10 @@ export const Header: React.FC = () => {
       <AppBar
         position="static"
         elevation={0}
-        className={classes.headerContainer}
+        className={classes.navbarContainer}
       >
         <Toolbar disableGutters className={classes.toolbarContainer}>
-          {matchesSmall ? drawer : largeHeader}
+          {matchesSmall ? drawer : largeNavbar}
         </Toolbar>
         {!matchesExtraSmall && <div className={classes.bottomLine} />}
       </AppBar>
