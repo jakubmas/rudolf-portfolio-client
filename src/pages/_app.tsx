@@ -40,8 +40,3 @@ export default withUrqlClient(createUrqlClient, { ssr: false })(function MyApp(
     </>
   );
 });
-
-// MyApp.propTypes = {
-//   Component: PropTypes.elementType.isRequired,
-//   pageProps: PropTypes.object.isRequired
-// };
