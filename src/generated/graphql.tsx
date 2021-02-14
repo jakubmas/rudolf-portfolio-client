@@ -41,6 +41,7 @@ export type User = {
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   username: Scalars['String'];
+  email: Scalars['String'];
   password: Scalars['String'];
 };
 
@@ -49,6 +50,7 @@ export type Mutation = {
   createSession: Session;
   updateSession?: Maybe<Session>;
   deleteSession: Scalars['Boolean'];
+  forgotPassword: Scalars['Boolean'];
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
@@ -71,13 +73,19 @@ export type MutationDeleteSessionArgs = {
 };
 
 
+export type MutationForgotPasswordArgs = {
+  email: Scalars['String'];
+};
+
+
 export type MutationRegisterArgs = {
-  options: UsernamePasswordInput;
+  options: UsernameEmailPasswordInput;
 };
 
 
 export type MutationLoginArgs = {
-  options: UsernamePasswordInput;
+  password: Scalars['String'];
+  usernameOrEmail: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -92,8 +100,9 @@ export type FieldError = {
   message: Scalars['String'];
 };
 
-export type UsernamePasswordInput = {
+export type UsernameEmailPasswordInput = {
   username: Scalars['String'];
+  email: Scalars['String'];
   password: Scalars['String'];
 };
 
@@ -103,7 +112,7 @@ export type UserFragment = (
 );
 
 export type LoginMutationVariables = Exact<{
-  username: Scalars['String'];
+  usernameOrEmail: Scalars['String'];
   password: Scalars['String'];
 }>;
 
@@ -148,8 +157,8 @@ export const UserFragmentDoc = gql`
 }
     `;
 export const LoginDocument = gql`
-    mutation Login($username: String!, $password: String!) {
-  login(options: {username: $username, password: $password}) {
+    mutation Login($usernameOrEmail: String!, $password: String!) {
+  login(usernameOrEmail: $usernameOrEmail, password: $password) {
     errors {
       field
       message

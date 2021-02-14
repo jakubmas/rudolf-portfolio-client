@@ -1,13 +1,16 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
+import { withUrqlClient } from 'next-urql';
 import Head from 'next/head';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Footer } from '../components/ui/Footer';
 import { Navbar } from '../components/ui/Navbar';
 import theme from '../components/ui/theme';
+import { createUrqlClient } from '../utils/createUrqlClient';
 
-export default function MyApp(props) {
+export default withUrqlClient(createUrqlClient, { ssr: false })(function MyApp(
+  props
+) {
   const { Component, pageProps } = props;
 
   React.useEffect(() => {
@@ -36,9 +39,4 @@ export default function MyApp(props) {
       </ThemeProvider>
     </>
   );
-}
-
-MyApp.propTypes = {
-  Component: PropTypes.elementType.isRequired,
-  pageProps: PropTypes.object.isRequired
-};
+});
