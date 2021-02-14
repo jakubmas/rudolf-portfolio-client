@@ -59,9 +59,8 @@ const login: React.FC = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { setErrors }) => {
-      console.log('WTF1 🐱', values);
       const response = await login(values);
-      console.log('WTF 🐱', response);
+
       if (response.data.login.errors) {
         setErrors(toErrorMap(response.data.login.errors));
       } else if (response.data.login.user) {
