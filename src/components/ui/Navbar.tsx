@@ -180,6 +180,7 @@ export const Navbar: React.FC = () => {
     router.pathname.substring(1).split('/')[0] === 'backoffice';
 
   const [{ data, fetching }] = useMeQuery();
+  console.log('useMeQuery', data, fetching);
   const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
 
   const iOS =

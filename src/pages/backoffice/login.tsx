@@ -45,7 +45,7 @@ const login: React.FC = () => {
   const [, login] = useLoginMutation();
 
   const validationSchema = yup.object({
-    username: yup.string().required('Username is required'),
+    usernameOrEmail: yup.string().required('Username is required'),
     password: yup
       .string()
       .min(4, 'Password has to be longer than 4 character')
@@ -54,15 +54,14 @@ const login: React.FC = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: '',
+      usernameOrEmail: '',
       password: ''
     },
     validationSchema: validationSchema,
-    onSubmit: async (v, { setErrors }) => {
-      const response = await login({
-        username: v.username,
-        password: v.password
-      });
+    onSubmit: async (values, { setErrors }) => {
+      console.log('WTF1 🐱', values);
+      const response = await login(values);
+      console.log('WTF 🐱', response);
       if (response.data.login.errors) {
         setErrors(toErrorMap(response.data.login.errors));
       } else if (response.data.login.user) {
@@ -85,22 +84,26 @@ const login: React.FC = () => {
           >
             <Grid item className={classes.inputContainer}>
               <Input
-                id="username"
-                name="username"
-                label="Username"
-                value={formik.values.username}
+                id="usernameOrEmail"
+                name="usernameOrEmail"
+                label="Username or Email"
+                value={formik.values.usernameOrEmail}
                 setValue={formik.handleChange}
                 error={
-                  formik.touched.username && Boolean(formik.errors.username)
+                  formik.touched.usernameOrEmail &&
+                  Boolean(formik.errors.usernameOrEmail)
                 }
-                helperText={formik.touched.username && formik.errors.username}
+                helperText={
+                  formik.touched.usernameOrEmail &&
+                  formik.errors.usernameOrEmail
+                }
               />
             </Grid>
             <Grid item className={classes.inputContainer}>
               <Input
                 id="password"
                 name="password"
-                label="Passowrd"
+                label="Password"
                 type="password"
                 value={formik.values.password}
                 setValue={formik.handleChange}
@@ -117,7 +120,7 @@ const login: React.FC = () => {
               color="secondary"
               disabled={
                 Boolean(formik.errors.password) ||
-                Boolean(formik.errors.username)
+                Boolean(formik.errors.usernameOrEmail)
               }
               className={classes.button}
             >
