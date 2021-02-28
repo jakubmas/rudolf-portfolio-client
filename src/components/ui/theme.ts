@@ -10,7 +10,7 @@ const palette = {
   primary: { main: '#ededed' },
   secondary: { main: '#7cc78d' },
   error: {main: '#c93131'},
-  text: {primary: '#707070'},
+  text: {primary: '#707070', secondary: '#7cb3c7'},
   background: {default: '#ededed'},
   success: {main: '#7cb3c7'}
 };

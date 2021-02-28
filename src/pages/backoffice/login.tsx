@@ -1,14 +1,18 @@
+import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { makeStyles } from '@material-ui/styles';
 import { useFormik } from 'formik';
+import { withUrqlClient } from 'next-urql';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import * as yup from 'yup';
 import { Input } from '../../components/ui/Input';
 import { LayoutCenterItem, LayoutContainer } from '../../containers/Layout';
 import { useLoginMutation } from '../../generated/graphql';
+import { createUrqlClient } from '../../utils/createUrqlClient';
 import { toErrorMap } from '../../utils/toErrorMap';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -35,6 +39,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '6rem',
     borderRadius: '0.7rem',
     color: 'white'
+  },
+  forgotPasswordButton: {
+    cursor: 'pointer',
+    color: theme.palette.text.secondary
   }
 }));
 
@@ -113,18 +121,31 @@ const login: React.FC = () => {
               />
             </Grid>
 
-            <Button
-              type="submit"
-              variant="contained"
-              color="secondary"
-              disabled={
-                Boolean(formik.errors.password) ||
-                Boolean(formik.errors.usernameOrEmail)
-              }
-              className={classes.button}
-            >
-              Login
-            </Button>
+            <Grid>
+              <NextLink href="/backoffice/forgot-password" passHref>
+                <Typography
+                  component="p"
+                  className={classes.forgotPasswordButton}
+                >
+                  Forgot password?
+                </Typography>
+              </NextLink>
+            </Grid>
+
+            <Grid>
+              <Button
+                type="submit"
+                variant="contained"
+                color="secondary"
+                disabled={
+                  Boolean(formik.errors.password) ||
+                  Boolean(formik.errors.usernameOrEmail)
+                }
+                className={classes.button}
+              >
+                Login
+              </Button>
+            </Grid>
           </Grid>
         </form>
       </LayoutCenterItem>
@@ -132,4 +153,4 @@ const login: React.FC = () => {
   );
 };
 
-export default login;
+export default withUrqlClient(createUrqlClient)(login);
