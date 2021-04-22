@@ -153,7 +153,6 @@ const useStyles = makeStyles((theme: Theme) => {
       }
     },
     drawerLogoutButton: {
-      // marginBottom: '10vh',
       justifyContent: 'center',
       '& .MuiTypography-root': {
         fontSize: '1.1rem',
@@ -215,8 +214,8 @@ export const Navbar: React.FC = () => {
 
   let backofficeTabs = [
     {
-      to: '/backoffice/photos',
-      label: 'Photos',
+      to: '/backoffice/session',
+      label: 'Session',
       active: false
     },
     {

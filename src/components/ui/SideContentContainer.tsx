@@ -1,4 +1,3 @@
-import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
@@ -105,25 +104,30 @@ type SideContentContainerProps = {
   containerEast?: Boolean;
   containerWest?: Boolean;
   iconsSection?: Boolean;
+  center?: Boolean;
 };
 
-export const SideContentContainer: React.FC<SideContentContainerProps> = (
-  props
-) => {
+export const SideContentContainer: React.FC<SideContentContainerProps> = ({
+  containerEast,
+  containerWest,
+  iconsSection,
+  center = true,
+  children
+}) => {
   const classes = useStyles();
 
-  const { containerEast, containerWest, iconsSection } = props;
+  // const { containerEast, containerWest, iconsSection } = props;
 
   return (
     <Grid container style={{ height: '100%' }}>
       <Grid
-        alignContent="center"
+        alignContent={center ? 'center' : undefined}
         container
         className={`${classes.container} ${
           containerEast && classes.containerPaddingEast
         } ${containerWest && classes.containerPaggingWest}`}
       >
-        <Typography component="h2" className={classes.title}>
+        {/* <Typography component="h2" className={classes.title}>
           Lorem ipsum dolor sit amet
         </Typography>
         <Typography component="p" className={classes.textRegular}>
@@ -134,7 +138,8 @@ export const SideContentContainer: React.FC<SideContentContainerProps> = (
           tristique auctor erat, nec aliquet nisi lobortis eget. Duis ultrices
           pulvinar nunc. Nulla lorem nunc, facilisis at arcu sit amet, aliquet
           luctus felis.
-        </Typography>
+        </Typography> */}
+        {children}
         {/* <Typography component="p" className={classes.textRegular}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
           tincidunt mauris at bibendum pellentesque. Praesent lobortis varius

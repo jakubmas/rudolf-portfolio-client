@@ -32,7 +32,6 @@ export type Session = {
   id: Scalars['Float'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-  title: Scalars['String'];
 };
 
 export type User = {
@@ -42,7 +41,6 @@ export type User = {
   updatedAt: Scalars['String'];
   username: Scalars['String'];
   email: Scalars['String'];
-  password: Scalars['String'];
 };
 
 export type Mutation = {
@@ -188,7 +186,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & UserFragment
+    & Pick<User, 'username'>
   )> }
 );
 
@@ -259,10 +257,10 @@ export function useLogoutMutation() {
 export const MeDocument = gql`
     query Me {
   me {
-    ...User
+    username
   }
 }
-    ${UserFragmentDoc}`;
+    `;
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });

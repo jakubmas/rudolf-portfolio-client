@@ -72,7 +72,7 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
         setErrors(errorMap);
       } else if (response.data.changePassword.user) {
         // TODO change route to main
-        router.push('/backoffice/photos');
+        router.push('/backoffice/session');
       }
     }
   });

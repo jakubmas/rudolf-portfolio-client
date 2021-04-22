@@ -42,6 +42,7 @@ export const Input = ({
   setValue,
   error,
   helperText,
+  customClass = '',
   type = 'text',
   style = {}
 }) => {
@@ -68,6 +69,7 @@ export const Input = ({
         }
       }}
       InputProps={{
+        className: customClass,
         classes: {
           root: error
             ? classes.cssErrorOutlinedInput
