@@ -7,7 +7,7 @@ import { withUrqlClient } from 'next-urql';
 import React, { useState } from 'react';
 import * as yup from 'yup';
 import { CustomizedSnackbars } from '../../components/ui/CustomizedSnackbars';
-import { Input } from '../../components/ui/Input';
+import { Input } from '../../components/ui/Inputs/Input';
 import { LayoutCenterItem, LayoutContainer } from '../../containers/Layout';
 import { useForgotPasswordMutation } from '../../generated/graphql';
 import { createUrqlClient } from '../../utils/createUrqlClient';

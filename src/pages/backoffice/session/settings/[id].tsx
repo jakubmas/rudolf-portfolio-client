@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/styles';
 import { useFormik } from 'formik';
 import React from 'react';
 import * as yup from 'yup';
-import { InputButton } from '../../../../components/ui/InputButton';
+import { InputButton } from '../../../../components/ui/Inputs/InputButton';
 import { LayoutContainer, LayoutWrapper } from '../../../../containers/Layout';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -161,8 +161,8 @@ const settings: React.FC = () => {
             </p>
           </InputButton>
 
-          <p>tree</p>
           <p>INPUT DROPDOWN BUTTON</p>
+          {/* <CheckboxTreeView /> */}
 
           <InputButton
             id="delete"

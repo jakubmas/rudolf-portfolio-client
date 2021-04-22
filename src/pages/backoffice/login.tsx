@@ -9,7 +9,7 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import * as yup from 'yup';
-import { Input } from '../../components/ui/Input';
+import { Input } from '../../components/ui/Inputs/Input';
 import { LayoutCenterItem, LayoutContainer } from '../../containers/Layout';
 import { useLoginMutation } from '../../generated/graphql';
 import { createUrqlClient } from '../../utils/createUrqlClient';
