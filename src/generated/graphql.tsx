@@ -24,28 +24,30 @@ export type Query = {
 
 
 export type QuerySessionArgs = {
-  id: Scalars['Float'];
+  id: Scalars['String'];
 };
 
 export type Session = {
   __typename?: 'Session';
-  id: Scalars['Float'];
+  id: Scalars['String'];
+  title: Scalars['String'];
+  creatorId: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
 
 export type User = {
   __typename?: 'User';
-  id: Scalars['Float'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  id: Scalars['String'];
   username: Scalars['String'];
   email: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createSession: Session;
+  createSession: SessionResponse;
   updateSession?: Maybe<Session>;
   deleteSession: Scalars['Boolean'];
   changePassword: UserResponse;
@@ -57,18 +59,18 @@ export type Mutation = {
 
 
 export type MutationCreateSessionArgs = {
-  title: Scalars['String'];
+  input: SessionInput;
 };
 
 
 export type MutationUpdateSessionArgs = {
   title?: Maybe<Scalars['String']>;
-  id: Scalars['Float'];
+  id: Scalars['String'];
 };
 
 
 export type MutationDeleteSessionArgs = {
-  id: Scalars['Float'];
+  id: Scalars['String'];
 };
 
 
@@ -91,6 +93,22 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   usernameOrEmail: Scalars['String'];
+};
+
+export type SessionResponse = {
+  __typename?: 'SessionResponse';
+  errors?: Maybe<Array<SessionError>>;
+  session?: Maybe<Session>;
+};
+
+export type SessionError = {
+  __typename?: 'SessionError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
+
+export type SessionInput = {
+  title: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -137,6 +155,25 @@ export type ChangePasswordMutation = (
     )>>, user?: Maybe<(
       { __typename?: 'User' }
       & UserFragment
+    )> }
+  ) }
+);
+
+export type CreateSessionMutationVariables = Exact<{
+  input: SessionInput;
+}>;
+
+
+export type CreateSessionMutation = (
+  { __typename?: 'Mutation' }
+  & { createSession: (
+    { __typename?: 'SessionResponse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'SessionError' }
+      & Pick<SessionError, 'field' | 'message'>
+    )>>, session?: Maybe<(
+      { __typename?: 'Session' }
+      & Pick<Session, 'id' | 'creatorId' | 'title' | 'createdAt' | 'updatedAt'>
     )> }
   ) }
 );
@@ -190,6 +227,17 @@ export type MeQuery = (
   )> }
 );
 
+export type SessionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SessionsQuery = (
+  { __typename?: 'Query' }
+  & { sessions: Array<(
+    { __typename?: 'Session' }
+    & Pick<Session, 'id' | 'title' | 'creatorId' | 'createdAt' | 'updatedAt'>
+  )> }
+);
+
 export const ErrorFragmentDoc = gql`
     fragment Error on FieldError {
   field
@@ -218,6 +266,27 @@ ${UserFragmentDoc}`;
 
 export function useChangePasswordMutation() {
   return Urql.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument);
+};
+export const CreateSessionDocument = gql`
+    mutation CreateSession($input: SessionInput!) {
+  createSession(input: $input) {
+    errors {
+      field
+      message
+    }
+    session {
+      id
+      creatorId
+      title
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+
+export function useCreateSessionMutation() {
+  return Urql.useMutation<CreateSessionMutation, CreateSessionMutationVariables>(CreateSessionDocument);
 };
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
@@ -264,4 +333,19 @@ export const MeDocument = gql`
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+};
+export const SessionsDocument = gql`
+    query Sessions {
+  sessions {
+    id
+    title
+    creatorId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+export function useSessionsQuery(options: Omit<Urql.UseQueryArgs<SessionsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<SessionsQuery>({ query: SessionsDocument, ...options });
 };

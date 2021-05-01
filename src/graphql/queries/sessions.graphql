@@ -1,0 +1,9 @@
+query Sessions {
+  sessions {
+    id
+    title
+    creatorId
+    createdAt
+    updatedAt
+  }
+}

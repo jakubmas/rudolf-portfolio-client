@@ -1,0 +1,15 @@
+mutation CreateSession($input: SessionInput!) {
+  createSession(input: $input) {
+    errors {
+      field
+      message
+    }
+    session {
+      id
+      creatorId
+      title
+      createdAt
+      updatedAt
+    }
+  }
+}
