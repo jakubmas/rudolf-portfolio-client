@@ -26,8 +26,8 @@ import {
   LayoutWrapper
 } from '../../../containers/Layout';
 import {
-  useCreateSessionMutation,
-  useSessionsQuery
+  useBackofficeFoldersQuery,
+  useCreateBackofficeFolderMutation
 } from '../../../generated/graphql';
 import { createUrqlClient } from '../../../utils/createUrqlClient';
 
@@ -71,9 +71,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Index: React.FC = () => {
   const classes = useStyles();
 
-  const [{ data, fetching }] = useSessionsQuery();
+  const [{ data, fetching }] = useBackofficeFoldersQuery();
 
-  const [, createSession] = useCreateSessionMutation();
+  const [, createBackofficeFolder] = useCreateBackofficeFolderMutation();
+
   const DummyArr = [
     true,
     false,
@@ -87,7 +88,7 @@ const Index: React.FC = () => {
     false
   ];
 
-  const [session, setSession] = useState(undefined);
+  const [folder, setFolder] = useState(undefined);
 
   const [open, setOpen] = React.useState(false);
 
@@ -101,9 +102,9 @@ const Index: React.FC = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { setErrors }) => {
-      const { data, error } = await createSession({ input: values });
+      const { data, error } = await createBackofficeFolder({ input: values });
 
-      if (!error && !data?.createSession.errors) {
+      if (!error && !data?.createBackofficeFolder.errors) {
         formik.values.title = '';
         setOpen(false);
       }
@@ -120,22 +121,22 @@ const Index: React.FC = () => {
   };
 
   const renderSideContainerContent = () => {
-    if (!fetching && data.sessions) {
-      return data.sessions.map((folder) => (
+    if (!fetching && data.backofficeFolders) {
+      return data.backofficeFolders.map((backofficeFolder) => (
         <IconButton
           onClick={() => {
-            setSession(folder.id);
+            setFolder(backofficeFolder.id);
           }}
           className={`${classes.folderIconButton} ${classes.iconButton}`}
           disableRipple
-          key={folder.id}
+          key={backofficeFolder.id}
         >
-          {session === folder.id ? (
+          {folder === backofficeFolder.id ? (
             <FolderOpenIcon style={{ fontSize: 50 }} />
           ) : (
             <FolderIcon style={{ fontSize: 50 }} />
           )}
-          <p style={{ fontSize: 10 }}>{folder.title}</p>
+          <p style={{ fontSize: 10 }}>{backofficeFolder.title}</p>
         </IconButton>
       ));
     }
@@ -161,7 +162,7 @@ const Index: React.FC = () => {
         <LayoutBorder />
       </LayoutCenterItem>
 
-      {session && (
+      {folder && (
         <LayoutWrapper breakdownPoint="md" columnsNumber={7}>
           {/* settings Button */}
           <Box
@@ -171,7 +172,7 @@ const Index: React.FC = () => {
             alignItems="center"
             className={classes.settingsBox}
           >
-            <NextLink href={`/backoffice/session/settings/${session}`} passHref>
+            <NextLink href={`/backoffice/photos/settings/${folder}`} passHref>
               <IconButton
                 className={classes.iconButton}
                 onClick={() => {}}

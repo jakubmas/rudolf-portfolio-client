@@ -1,0 +1,15 @@
+mutation CreateBackofficeFolder($input: BackofficeFolderInput!) {
+  createBackofficeFolder(input: $input) {
+    errors {
+      field
+      message
+    }
+    backofficeFolder {
+      id
+      creatorId
+      title
+      createdAt
+      updatedAt
+    }
+  }
+}

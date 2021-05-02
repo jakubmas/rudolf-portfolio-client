@@ -16,19 +16,19 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  backofficeFolders: Array<BackofficeFolder>;
+  backofficeFolder?: Maybe<BackofficeFolder>;
   hello: Scalars['String'];
-  sessions: Array<Session>;
-  session?: Maybe<Session>;
   me?: Maybe<User>;
 };
 
 
-export type QuerySessionArgs = {
+export type QueryBackofficeFolderArgs = {
   id: Scalars['String'];
 };
 
-export type Session = {
-  __typename?: 'Session';
+export type BackofficeFolder = {
+  __typename?: 'BackofficeFolder';
   id: Scalars['String'];
   title: Scalars['String'];
   creatorId: Scalars['String'];
@@ -47,9 +47,9 @@ export type User = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createSession: SessionResponse;
-  updateSession?: Maybe<Session>;
-  deleteSession: Scalars['Boolean'];
+  createBackofficeFolder: BackofficeFolderResponse;
+  updateBackofficeFolder?: Maybe<BackofficeFolder>;
+  deleteBackofficeFolder: Scalars['Boolean'];
   changePassword: UserResponse;
   forgotPassword: Scalars['Boolean'];
   register: UserResponse;
@@ -58,18 +58,18 @@ export type Mutation = {
 };
 
 
-export type MutationCreateSessionArgs = {
-  input: SessionInput;
+export type MutationCreateBackofficeFolderArgs = {
+  input: BackofficeFolderInput;
 };
 
 
-export type MutationUpdateSessionArgs = {
+export type MutationUpdateBackofficeFolderArgs = {
   title?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 
-export type MutationDeleteSessionArgs = {
+export type MutationDeleteBackofficeFolderArgs = {
   id: Scalars['String'];
 };
 
@@ -95,19 +95,19 @@ export type MutationLoginArgs = {
   usernameOrEmail: Scalars['String'];
 };
 
-export type SessionResponse = {
-  __typename?: 'SessionResponse';
-  errors?: Maybe<Array<SessionError>>;
-  session?: Maybe<Session>;
+export type BackofficeFolderResponse = {
+  __typename?: 'BackofficeFolderResponse';
+  errors?: Maybe<Array<BackofficeFolderError>>;
+  backofficeFolder?: Maybe<BackofficeFolder>;
 };
 
-export type SessionError = {
-  __typename?: 'SessionError';
+export type BackofficeFolderError = {
+  __typename?: 'BackofficeFolderError';
   field: Scalars['String'];
   message: Scalars['String'];
 };
 
-export type SessionInput = {
+export type BackofficeFolderInput = {
   title: Scalars['String'];
 };
 
@@ -159,21 +159,21 @@ export type ChangePasswordMutation = (
   ) }
 );
 
-export type CreateSessionMutationVariables = Exact<{
-  input: SessionInput;
+export type CreateBackofficeFolderMutationVariables = Exact<{
+  input: BackofficeFolderInput;
 }>;
 
 
-export type CreateSessionMutation = (
+export type CreateBackofficeFolderMutation = (
   { __typename?: 'Mutation' }
-  & { createSession: (
-    { __typename?: 'SessionResponse' }
+  & { createBackofficeFolder: (
+    { __typename?: 'BackofficeFolderResponse' }
     & { errors?: Maybe<Array<(
-      { __typename?: 'SessionError' }
-      & Pick<SessionError, 'field' | 'message'>
-    )>>, session?: Maybe<(
-      { __typename?: 'Session' }
-      & Pick<Session, 'id' | 'creatorId' | 'title' | 'createdAt' | 'updatedAt'>
+      { __typename?: 'BackofficeFolderError' }
+      & Pick<BackofficeFolderError, 'field' | 'message'>
+    )>>, backofficeFolder?: Maybe<(
+      { __typename?: 'BackofficeFolder' }
+      & Pick<BackofficeFolder, 'id' | 'creatorId' | 'title' | 'createdAt' | 'updatedAt'>
     )> }
   ) }
 );
@@ -216,6 +216,17 @@ export type LogoutMutation = (
   & Pick<Mutation, 'logout'>
 );
 
+export type BackofficeFoldersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type BackofficeFoldersQuery = (
+  { __typename?: 'Query' }
+  & { backofficeFolders: Array<(
+    { __typename?: 'BackofficeFolder' }
+    & Pick<BackofficeFolder, 'id' | 'title' | 'creatorId' | 'createdAt' | 'updatedAt'>
+  )> }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -224,17 +235,6 @@ export type MeQuery = (
   & { me?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'username'>
-  )> }
-);
-
-export type SessionsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type SessionsQuery = (
-  { __typename?: 'Query' }
-  & { sessions: Array<(
-    { __typename?: 'Session' }
-    & Pick<Session, 'id' | 'title' | 'creatorId' | 'createdAt' | 'updatedAt'>
   )> }
 );
 
@@ -267,14 +267,14 @@ ${UserFragmentDoc}`;
 export function useChangePasswordMutation() {
   return Urql.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument);
 };
-export const CreateSessionDocument = gql`
-    mutation CreateSession($input: SessionInput!) {
-  createSession(input: $input) {
+export const CreateBackofficeFolderDocument = gql`
+    mutation CreateBackofficeFolder($input: BackofficeFolderInput!) {
+  createBackofficeFolder(input: $input) {
     errors {
       field
       message
     }
-    session {
+    backofficeFolder {
       id
       creatorId
       title
@@ -285,8 +285,8 @@ export const CreateSessionDocument = gql`
 }
     `;
 
-export function useCreateSessionMutation() {
-  return Urql.useMutation<CreateSessionMutation, CreateSessionMutationVariables>(CreateSessionDocument);
+export function useCreateBackofficeFolderMutation() {
+  return Urql.useMutation<CreateBackofficeFolderMutation, CreateBackofficeFolderMutationVariables>(CreateBackofficeFolderDocument);
 };
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
@@ -323,6 +323,21 @@ export const LogoutDocument = gql`
 export function useLogoutMutation() {
   return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
 };
+export const BackofficeFoldersDocument = gql`
+    query backofficeFolders {
+  backofficeFolders {
+    id
+    title
+    creatorId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+export function useBackofficeFoldersQuery(options: Omit<Urql.UseQueryArgs<BackofficeFoldersQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<BackofficeFoldersQuery>({ query: BackofficeFoldersDocument, ...options });
+};
 export const MeDocument = gql`
     query Me {
   me {
@@ -333,19 +348,4 @@ export const MeDocument = gql`
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
-};
-export const SessionsDocument = gql`
-    query Sessions {
-  sessions {
-    id
-    title
-    creatorId
-    createdAt
-    updatedAt
-  }
-}
-    `;
-
-export function useSessionsQuery(options: Omit<Urql.UseQueryArgs<SessionsQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<SessionsQuery>({ query: SessionsDocument, ...options });
 };

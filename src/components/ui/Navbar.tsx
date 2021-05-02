@@ -214,8 +214,8 @@ export const Navbar: React.FC = () => {
 
   let backofficeTabs = [
     {
-      to: '/backoffice/session',
-      label: 'Session',
+      to: '/backoffice/photos',
+      label: 'Photos',
       active: false
     },
     {

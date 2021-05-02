@@ -1,5 +1,5 @@
-query Sessions {
-  sessions {
+query backofficeFolders {
+  backofficeFolders {
     id
     title
     creatorId
