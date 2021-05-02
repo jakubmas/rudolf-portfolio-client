@@ -99,14 +99,16 @@ export const LayoutCenterItem: FunctionComponent<LayoutCenterItemProps> = ({
 type LayoutWrapperProps = {
   breakdownPoint: Breakpoint;
   columnsNumber: GridSize;
+  alignSelfProp?: string;
 };
 
 export const LayoutWrapper: FunctionComponent<LayoutWrapperProps> = ({
   columnsNumber,
   breakdownPoint,
+  alignSelfProp = '',
   children
 }) => {
-  // const classes = useStyles();
+  const classes = useStyles();
   const theme = useTheme();
   const matchesMedium = useMediaQuery(theme.breakpoints.down(breakdownPoint));
   return (
@@ -114,7 +116,8 @@ export const LayoutWrapper: FunctionComponent<LayoutWrapperProps> = ({
       container
       item
       md={matchesMedium ? 12 : columnsNumber}
-      // className={classes.rightContentContainer}
+      className={classes.rightContentContainer}
+      style={{ alignSelf: alignSelfProp }}
     >
       {children}
     </Grid>

@@ -32,15 +32,15 @@ const useStyles = makeStyles(() => ({
 }));
 
 type WorkCardProps = {
-  photoUrl: string;
-  title: string;
+  testPhoto: Boolean;
+  index: number;
   backoffice?: boolean;
   customClass?: string;
 };
 
-export const WorkCard: React.FC<WorkCardProps> = ({
-  photoUrl,
-  title,
+export const WorkCardWIP: React.FC<WorkCardProps> = ({
+  testPhoto,
+  index,
   backoffice = false,
   customClass
 }) => {
@@ -76,7 +76,11 @@ export const WorkCard: React.FC<WorkCardProps> = ({
         >
           <CardMedia
             className={backoffice ? customClass : classes.media}
-            image={photoUrl}
+            image={
+              testPhoto
+                ? '/assets/LandingPage-photo.png'
+                : '/assets/Contact-photo.png'
+            }
             title="Main photo for session "
           />
           <CardContent className={classes.cardContent}>
@@ -86,7 +90,7 @@ export const WorkCard: React.FC<WorkCardProps> = ({
                 component="h2"
                 className={classes.cardTitle}
               >
-                {title}
+                Sesja {index + 1}
               </Typography>
             ) : (
               <Typography
@@ -94,7 +98,7 @@ export const WorkCard: React.FC<WorkCardProps> = ({
                 component="p"
                 className={classes.cardTitleSmall}
               >
-                {title}
+                Sesja {index + 1}
               </Typography>
             )}
             {!backoffice && <br />}

@@ -27,15 +27,13 @@ import {
 } from '../../../containers/Layout';
 import {
   useBackofficeFoldersQuery,
-  useCreateBackofficeFolderMutation
+  useBackofficePhotosQuery,
+  useCreateBackofficeFolderMutation,
+  useCreateBackofficePhotoMutation
 } from '../../../generated/graphql';
 import { createUrqlClient } from '../../../utils/createUrqlClient';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  dialogButtons: {
-    display: 'flex',
-    justifyContent: 'space-between'
-  },
   button: {
     borderRadius: '0.7rem',
     color: 'white'
@@ -65,60 +63,79 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-around'
+  },
+  test: {
+    backgroundColor: 'red'
   }
 }));
 
 const Index: React.FC = () => {
   const classes = useStyles();
 
-  const [{ data, fetching }] = useBackofficeFoldersQuery();
-
   const [, createBackofficeFolder] = useCreateBackofficeFolderMutation();
 
-  const DummyArr = [
-    true,
-    false,
-    true,
-    false,
-    true,
-    false,
-    true,
-    false,
-    true,
-    false
-  ];
+  const [, createBackofficePhoto] = useCreateBackofficePhotoMutation();
+
+  const [{ data, fetching }] = useBackofficeFoldersQuery();
 
   const [folder, setFolder] = useState(undefined);
 
-  const [open, setOpen] = React.useState(false);
+  const [
+    { data: photosData, fetching: photosFetching }
+  ] = useBackofficePhotosQuery({
+    variables: {
+      folderId: folder
+    }
+  });
 
-  const validationSchema = yup.object({
+  const [openAddFolderDialog, setOpenAddFolderDialog] = React.useState(false);
+  const [openAddPhotoDialog, setOpenAddPhotoDialog] = React.useState(false);
+
+  const validationSchemaAddFolder = yup.object({
     title: yup.string().required('Title is required')
   });
 
-  const formik = useFormik({
+  const validationSchemaAddPhoto = yup.object({
+    title: yup.string().required('Title is required'),
+    photoUrl: yup.string().required('URL is required')
+  });
+
+  const formikAddFolder = useFormik({
     initialValues: {
       title: ''
     },
-    validationSchema: validationSchema,
+    validationSchema: validationSchemaAddFolder,
     onSubmit: async (values, { setErrors }) => {
       const { data, error } = await createBackofficeFolder({ input: values });
 
       if (!error && !data?.createBackofficeFolder.errors) {
-        formik.values.title = '';
-        setOpen(false);
+        formikAddFolder.values.title = '';
+        setOpenAddFolderDialog(false);
       }
     }
   });
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const formikAddPhoto = useFormik({
+    initialValues: {
+      title: '',
+      photoUrl: ''
+    },
+    validationSchema: validationSchemaAddFolder,
+    onSubmit: async (values, { setErrors }) => {
+      const { data, error } = await createBackofficePhoto({
+        input: {
+          folderId: folder,
+          ...values
+        }
+      });
 
-  const closeDialog = () => {
-    formik.values.title = '';
-    setOpen(false);
-  };
+      if (!error && !data?.createBackofficePhoto.errors) {
+        formikAddPhoto.values.title = '';
+        formikAddPhoto.values.photoUrl = '';
+        setOpenAddFolderDialog(false);
+      }
+    }
+  });
 
   const renderSideContainerContent = () => {
     if (!fetching && data.backofficeFolders) {
@@ -142,13 +159,16 @@ const Index: React.FC = () => {
     }
   };
 
+  const displayCards =
+    photosData && !photosFetching && photosData.backofficePhotos.length > 0;
+
   return (
     <LayoutContainer breakdownPoint="md">
       <LayoutCenterItem breakdownPoint="md" columnsNumber={5}>
         <SideContentContainer containerEast center={false}>
           <div>
             <IconButton
-              onClick={handleClickOpen}
+              onClick={() => setOpenAddFolderDialog(true)}
               className={`${classes.folderIconButton} ${classes.iconButton}`}
               disableRipple
             >
@@ -163,7 +183,11 @@ const Index: React.FC = () => {
       </LayoutCenterItem>
 
       {folder && (
-        <LayoutWrapper breakdownPoint="md" columnsNumber={7}>
+        <LayoutWrapper
+          breakdownPoint="md"
+          columnsNumber={7}
+          alignSelfProp="baseline"
+        >
           {/* settings Button */}
           <Box
             display="flex"
@@ -184,24 +208,28 @@ const Index: React.FC = () => {
           </Box>
 
           <LayoutRightItem breakdownPoint="md" columnsNumber={12}>
-            {DummyArr.map((el, i) => (
-              <WorkCard
-                customClass={classes.card}
-                backoffice={true}
-                testPhoto={el}
-                key={Math.random()}
-                index={i}
-              />
-            ))}
+            {displayCards &&
+              photosData.backofficePhotos.map((photo) => (
+                <WorkCard
+                  customClass={classes.card}
+                  backoffice={true}
+                  title={photo.title}
+                  photoUrl={photo.photoUrl}
+                  key={photo.id}
+                />
+              ))}
 
             {/* ADD PHOTO BUTTON */}
-
-            <Grid container item md={4} style={{ justifyContent: 'center' }}>
+            <Grid
+              className={!displayCards && classes.card}
+              container
+              item
+              md={4}
+              style={{ justifyContent: 'center' }}
+            >
               <IconButton
                 className={classes.iconButton}
-                onClick={() => {
-                  // here comes add photo modal
-                }}
+                onClick={() => setOpenAddPhotoDialog(true)}
                 disableRipple
               >
                 <AddCircleIcon style={{ fontSize: 50 }} />
@@ -210,20 +238,78 @@ const Index: React.FC = () => {
           </LayoutRightItem>
         </LayoutWrapper>
       )}
-      <CustomDialog isOpen={open} title="Create new folder">
-        <form onSubmit={formik.handleSubmit} className={classes.formDialog}>
+
+      {/* New Folder Dialog */}
+      <CustomDialog isOpen={openAddFolderDialog} title="Create new folder">
+        <form
+          onSubmit={formikAddFolder.handleSubmit}
+          className={classes.formDialog}
+        >
           <Input
             id="title"
             name="title"
             label="Title"
-            value={formik.values.title}
-            setValue={formik.handleChange}
-            error={formik.touched.title && Boolean(formik.errors.title)}
-            helperText={formik.touched.title && formik.errors.title}
+            value={formikAddFolder.values.title}
+            setValue={formikAddFolder.handleChange}
+            error={
+              formikAddFolder.touched.title &&
+              Boolean(formikAddFolder.errors.title)
+            }
+            helperText={
+              formikAddFolder.touched.title && formikAddFolder.errors.title
+            }
           />
           <CustomDialogActions
-            handleClose={closeDialog}
-            isButtonDisabled={Boolean(formik.errors.title)}
+            handleClose={() => {
+              formikAddFolder.values.title = '';
+              setOpenAddFolderDialog(false);
+            }}
+            isButtonDisabled={Boolean(formikAddFolder.errors.title)}
+          />
+        </form>
+      </CustomDialog>
+
+      {/* Add Photo Dialog */}
+      <CustomDialog isOpen={openAddPhotoDialog} title="Add new photo">
+        <form
+          onSubmit={formikAddPhoto.handleSubmit}
+          className={classes.formDialog}
+        >
+          <Input
+            id="title"
+            name="title"
+            label="Title"
+            value={formikAddPhoto.values.title}
+            setValue={formikAddPhoto.handleChange}
+            error={
+              formikAddPhoto.touched.title &&
+              Boolean(formikAddPhoto.errors.title)
+            }
+            helperText={
+              formikAddPhoto.touched.title && formikAddPhoto.errors.title
+            }
+          />
+          <Input
+            id="photoUrl"
+            name="photoUrl"
+            label="Photo URL"
+            value={formikAddPhoto.values.photoUrl}
+            setValue={formikAddPhoto.handleChange}
+            error={
+              formikAddPhoto.touched.photoUrl &&
+              Boolean(formikAddPhoto.errors.photoUrl)
+            }
+            helperText={
+              formikAddPhoto.touched.photoUrl && formikAddPhoto.errors.photoUrl
+            }
+          />
+          <CustomDialogActions
+            handleClose={() => {
+              formikAddPhoto.values.title = '';
+              formikAddPhoto.values.photoUrl = '';
+              setOpenAddPhotoDialog(false);
+            }}
+            isButtonDisabled={Boolean(formikAddPhoto.errors.title)}
           />
         </form>
       </CustomDialog>

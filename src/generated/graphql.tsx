@@ -18,6 +18,7 @@ export type Query = {
   __typename?: 'Query';
   backofficeFolders: Array<BackofficeFolder>;
   backofficeFolder?: Maybe<BackofficeFolder>;
+  backofficePhotos: Array<BackofficePhoto>;
   hello: Scalars['String'];
   me?: Maybe<User>;
 };
@@ -27,11 +28,17 @@ export type QueryBackofficeFolderArgs = {
   id: Scalars['String'];
 };
 
+
+export type QueryBackofficePhotosArgs = {
+  folderId: Scalars['String'];
+};
+
 export type BackofficeFolder = {
   __typename?: 'BackofficeFolder';
   id: Scalars['String'];
   title: Scalars['String'];
   creatorId: Scalars['String'];
+  creator: User;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -45,11 +52,23 @@ export type User = {
   updatedAt: Scalars['String'];
 };
 
+export type BackofficePhoto = {
+  __typename?: 'BackofficePhoto';
+  id: Scalars['String'];
+  title: Scalars['String'];
+  photoUrl: Scalars['String'];
+  folderId: Scalars['String'];
+  folder: BackofficeFolder;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createBackofficeFolder: BackofficeFolderResponse;
   updateBackofficeFolder?: Maybe<BackofficeFolder>;
   deleteBackofficeFolder: Scalars['Boolean'];
+  createBackofficePhoto: BackofficePhotoResponse;
   changePassword: UserResponse;
   forgotPassword: Scalars['Boolean'];
   register: UserResponse;
@@ -71,6 +90,11 @@ export type MutationUpdateBackofficeFolderArgs = {
 
 export type MutationDeleteBackofficeFolderArgs = {
   id: Scalars['String'];
+};
+
+
+export type MutationCreateBackofficePhotoArgs = {
+  input: BackofficePhotoInput;
 };
 
 
@@ -109,6 +133,24 @@ export type BackofficeFolderError = {
 
 export type BackofficeFolderInput = {
   title: Scalars['String'];
+};
+
+export type BackofficePhotoResponse = {
+  __typename?: 'BackofficePhotoResponse';
+  errors?: Maybe<Array<BackofficePhotoError>>;
+  backofficePhoto?: Maybe<BackofficePhoto>;
+};
+
+export type BackofficePhotoError = {
+  __typename?: 'BackofficePhotoError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
+
+export type BackofficePhotoInput = {
+  title: Scalars['String'];
+  photoUrl: Scalars['String'];
+  folderId: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -178,6 +220,25 @@ export type CreateBackofficeFolderMutation = (
   ) }
 );
 
+export type CreateBackofficePhotoMutationVariables = Exact<{
+  input: BackofficePhotoInput;
+}>;
+
+
+export type CreateBackofficePhotoMutation = (
+  { __typename?: 'Mutation' }
+  & { createBackofficePhoto: (
+    { __typename?: 'BackofficePhotoResponse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'BackofficePhotoError' }
+      & Pick<BackofficePhotoError, 'field' | 'message'>
+    )>>, backofficePhoto?: Maybe<(
+      { __typename?: 'BackofficePhoto' }
+      & Pick<BackofficePhoto, 'id' | 'title' | 'photoUrl' | 'createdAt' | 'updatedAt'>
+    )> }
+  ) }
+);
+
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
 }>;
@@ -224,6 +285,19 @@ export type BackofficeFoldersQuery = (
   & { backofficeFolders: Array<(
     { __typename?: 'BackofficeFolder' }
     & Pick<BackofficeFolder, 'id' | 'title' | 'creatorId' | 'createdAt' | 'updatedAt'>
+  )> }
+);
+
+export type BackofficePhotosQueryVariables = Exact<{
+  folderId: Scalars['String'];
+}>;
+
+
+export type BackofficePhotosQuery = (
+  { __typename?: 'Query' }
+  & { backofficePhotos: Array<(
+    { __typename?: 'BackofficePhoto' }
+    & Pick<BackofficePhoto, 'id' | 'title' | 'photoUrl'>
   )> }
 );
 
@@ -288,6 +362,27 @@ export const CreateBackofficeFolderDocument = gql`
 export function useCreateBackofficeFolderMutation() {
   return Urql.useMutation<CreateBackofficeFolderMutation, CreateBackofficeFolderMutationVariables>(CreateBackofficeFolderDocument);
 };
+export const CreateBackofficePhotoDocument = gql`
+    mutation CreateBackofficePhoto($input: BackofficePhotoInput!) {
+  createBackofficePhoto(input: $input) {
+    errors {
+      field
+      message
+    }
+    backofficePhoto {
+      id
+      title
+      photoUrl
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+
+export function useCreateBackofficePhotoMutation() {
+  return Urql.useMutation<CreateBackofficePhotoMutation, CreateBackofficePhotoMutationVariables>(CreateBackofficePhotoDocument);
+};
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email)
@@ -337,6 +432,19 @@ export const BackofficeFoldersDocument = gql`
 
 export function useBackofficeFoldersQuery(options: Omit<Urql.UseQueryArgs<BackofficeFoldersQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<BackofficeFoldersQuery>({ query: BackofficeFoldersDocument, ...options });
+};
+export const BackofficePhotosDocument = gql`
+    query BackofficePhotos($folderId: String!) {
+  backofficePhotos(folderId: $folderId) {
+    id
+    title
+    photoUrl
+  }
+}
+    `;
+
+export function useBackofficePhotosQuery(options: Omit<Urql.UseQueryArgs<BackofficePhotosQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<BackofficePhotosQuery>({ query: BackofficePhotosDocument, ...options });
 };
 export const MeDocument = gql`
     query Me {

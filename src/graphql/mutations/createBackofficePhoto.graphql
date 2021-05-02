@@ -1,0 +1,15 @@
+mutation CreateBackofficePhoto($input: BackofficePhotoInput!) {
+  createBackofficePhoto(input: $input) {
+    errors {
+      field
+      message
+    }
+    backofficePhoto {
+      id
+      title
+      photoUrl
+      createdAt
+      updatedAt
+    }
+  }
+}

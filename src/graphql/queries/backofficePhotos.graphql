@@ -1,0 +1,7 @@
+query BackofficePhotos($folderId: String!) {
+  backofficePhotos(folderId: $folderId) {
+    id
+    title
+    photoUrl
+  }
+}
